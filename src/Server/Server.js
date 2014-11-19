@@ -4,14 +4,14 @@ var io = require('socket.io')(http);
 var Room = require('./Room');
 var Poll = require('./Poll.js');
 var roomsList = {};
-var playersList = [];
+var playersList = {};
 
 app.get('/', function(req, res){
 	res.sendfile(__dirname + '/index.html');
 });
 
 io.on('connection', function(socket){
-	console.log('player connected');
+	socket.emit('test',{id: socket.id});
 	//set palyer name
 	socket.on('setName', function(name){
 		socket.name = name;
@@ -20,7 +20,8 @@ io.on('connection', function(socket){
 
 	//create game
 	socket.on('createGame', function(){
-		var r = new Room(socket, io, roomsList);
+		console.log(playersList);
+		var r = new Room(socket, io, roomsList, playersList);
 		roomsList[r.id] = r;
 	});
 
@@ -38,19 +39,38 @@ io.on('connection', function(socket){
 		}
 	});
 
+	// connect the user to palyer if he is playing.
 	socket.on('view',function(id){
-		if(playersList.indexOf(id)>=0){
+		if(playersList[id]){
 			if(socket.room){
 				socket.room.removePlayer(socket);
 			}
-			socket.view = id;
-			socket.join(id);
+			socket.spectatingView = id;
+			socket.join("room_"+id);
+			if(playersList[id].poll){
+				if(playersList[id].poll.pollStatus == 'voting'){
+					socket.emit('test',playersList[id].poll.choices);
+				}
+			}
 		}
 	});
 
-	socket.on('chat message', function(msg){
-		io.emit('chat message', msg);
-		console.log(this.id);
+	//the player start a new poll
+	socket.on('startPoll',function(list){
+		if(socket.room){
+			var id = 1;
+			if(socket.poll){
+				id = socket.poll.id + 1;
+			}
+			socket.poll = new Poll(id, list, io, "room_"+socket.id);  // add "room_" to avoid that every message sent in that room will be sent also to the player with that ID
+		}	
+	});
+
+	// the player stop the poll
+	socket.on('stopPoll', function(){
+		if(socket.poll){
+			socket.poll.closePoll();
+		}
 	});
 
 	//if a player get disconnected he will be removed form player list and from the game.
@@ -60,27 +80,6 @@ io.on('connection', function(socket){
 			playersList.splice(playersList.indexOf(socket.id),1);
 		}
 	});
-
-	//the player start a new poll
-	socket.on('startPoll',function(list){
-		if(socket.room){
-			if(socket.pollId){
-				socket.pollId = socket.pollId + 1;
-			}else{
-				socket.pollId = 1;
-			}
-			io.to(socket.id).emit('newPoll',list);
-		}	
-	});
-
-	// the player stop the poll
-	socket.on('stopPoll', function(){
-		if(socket.room){
-			
-		}
-	});
-
-//	socket.on('pollVote', function(id));
 });
 
 
