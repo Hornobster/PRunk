@@ -12,6 +12,8 @@ app.get('/', function(req, res){
 
 io.on('connection', function(socket){
 	socket.emit('test',{id: socket.id});
+	console.log(socket.id);
+
 	//set palyer name
 	socket.on('setName', function(name){
 		socket.name = name;
@@ -76,8 +78,33 @@ io.on('connection', function(socket){
 	//if a player get disconnected he will be removed form player list and from the game.
 	socket.on('disconnect', function(){
 		if(socket.room){
-			room.removePlayer(socket);
+			socket.room.removePlayer(socket);
 			playersList.splice(playersList.indexOf(socket.id),1);
+		}
+	});
+
+	socket.on('sendVote',function(id){
+		console.log("try vote "+ id);
+		console.log(socket.spectatingView);
+		if(socket.spectatingView){
+			console.log('here');
+			var p = playersList[socket.spectatingView];
+			console.log(p);
+			if(p && p.poll && p.poll.pollStatus == 'voting'){
+				console.log('qqqq');
+				if(socket.vote && socket.vote.pollId == p.poll.id){
+					p.poll.changeVote(id, socket.vote.vote);
+				}else{
+					socket.vote = {vote: id, pollId: p.poll.id};
+					p.poll.vote(id);
+				}
+			}
+		}
+	});
+
+	socket.on('pollResult', function(){
+		if(socket.poll){
+			socket.emit('test',socket.poll.choices);
 		}
 	});
 });
@@ -85,5 +112,5 @@ io.on('connection', function(socket){
 
 
 http.listen(3000, function(){
-	console.log('listening on *:3000');
+	console.log('listening onn *:3000');
 });

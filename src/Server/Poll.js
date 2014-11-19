@@ -8,6 +8,7 @@ var Poll = function(id, choices, server, pollRoomId){
 	
 	// save user vote
 	this.vote = function(id){
+		console.log('voted '+id);
 		if(this.choices[id].count){
 			this.choices[id].count ++;
 		}else{
@@ -17,7 +18,7 @@ var Poll = function(id, choices, server, pollRoomId){
 	
 	// change user vote
 	this.changeVote = function(newId, oldId){
-		this.choices[oldId] --;
+		this.choices[oldId].count --;
 		this.vote(newId);
 	};
 
@@ -26,7 +27,7 @@ var Poll = function(id, choices, server, pollRoomId){
 		keys = Object.keys(this.choices);
 		max = this.choices[keys[0]];
 		keys.forEach(function(element, id, list){
-			if(this.choices[element].count > max.count){
+			if(this.choices[elemen].count && this.choices[element].count > max.count){
 				max = this.choices[element];
 			}
 		});
