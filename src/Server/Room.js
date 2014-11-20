@@ -40,11 +40,26 @@ var Room = function(socket, server, roomsList, playersList){
 		return text;
 	};
 	
+    
+    this.load = function(){
+        if(this.gameStatus == 'waiting'){
+            this.gameStatus = 'loading';
+            this.io.to(this.id).emit('test','load map');
+        }else{
+            this.owener.emit('err','you can\'t load the map now');
+        }
+    }
+    
 	// start the game
 	this.start = function(){
-		this.gameStatus = 'inGame';
-		io.to(this.id).emit('gameStart','1');
-	};
+        if(this.gameStatus == 'loading'){
+            this.gameStatus = 'inGame';
+            this.io.to(this.id).emit('test','gameStart');
+        }else{
+            this.owener.emit('err','you can\'t start the game now');
+        }
+	};    
+    
 	
 	// room id, this is is needed to join the play
 	this.id = socket.id + this.randomString(5);
