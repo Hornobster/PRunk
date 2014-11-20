@@ -31,9 +31,12 @@
 		console.log(msg);
         $('#messages').append($('<li>').text(msg));
       });
-	socket.on('test', function(obj){
-		console.log(obj);
-	});
+    socket.on('test', function(obj){
+            console.log(obj);
+        });
+    socket.on('err', function(obj){
+        console.log(obj);
+    })
     </script>
   </body>
 </html>

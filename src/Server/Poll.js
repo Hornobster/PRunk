@@ -25,6 +25,9 @@ var Poll = function(id, choices, server, pollRoomId){
 	// get the poll results
 	this.getResult = function(){
 		keys = Object.keys(this.choices);
+		if(!this.choices[keys[0]].count){
+			this.choices[keys[0]].count = 0;
+		}
 		max = this.choices[keys[0]];
 		keys.forEach(function(element, id, list){
 			if(this.choices[elemen].count && this.choices[element].count > max.count){

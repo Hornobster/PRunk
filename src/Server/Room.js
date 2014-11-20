@@ -45,8 +45,7 @@ var Room = function(socket, server, roomsList, playersList){
 		this.gameStatus = 'inGame';
 		io.to(this.id).emit('gameStart','1');
 	};
-
-	console.log(playersList);
+	
 	// room id, this is is needed to join the play
 	this.id = socket.id + this.randomString(5);
 	// list of player in the game
@@ -61,7 +60,9 @@ var Room = function(socket, server, roomsList, playersList){
 	this.gameStatus = 'waiting';
 	// add the game owner to the player list
 	this.addPlayer(socket);
-
+    // set the owener of the game. The owener can modify the settings of the game
+    this.owener = socket;
+    
 	socket.emit('test', this.id);
 };
 
