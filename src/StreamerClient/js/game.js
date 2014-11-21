@@ -35,14 +35,4 @@ window.onload = function() {
 
     KeyboardInputComponent(Q);
     PlayerClass(Q);
-
-    Q.load([PLAYER_SPRITE_FILE], function () {
-        var player = new Q.Player({x: Q.width / 2, y: Q.height / 2, inputComponent: 'keyboardInput'});
-
-        Q.gameLoop(function(dt) {
-            Q.clear();
-            player.update(dt);
-            player.render(Q.ctx);
-        });
-    });
 };
