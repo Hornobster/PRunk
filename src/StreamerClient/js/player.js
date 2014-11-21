@@ -28,16 +28,12 @@ function PlayerClass(Q) {
                 vx: 0,
                 vy: 0,
                 speed: 200,
-                isJumping: false
+                isJumping: false,
+                inputComponent: 'keyboardInput'
             });
 
-            // bind action buttons to the respective handlers
-            Q.input.on('qKey', this, this.onActionQ);
-            Q.input.on('wKey', this, this.onActionW);
-            Q.input.on('eKey', this, this.onActionE);
-            Q.input.on('rKey', this, this.onActionR);
-
-            Q.input.on('upKey', this, this.onActionJump);
+            // add input component which will trigger input events
+            this.add(this.p.inputComponent);
 
             // bind event handlers
             this.on('landed', this, this.onLand);
@@ -45,19 +41,19 @@ function PlayerClass(Q) {
 
         step: function(dt) {
             // update horizontal speed and sprite according to input
-            if (Q.inputs['leftKey'] && Q.inputs['rightKey']) {
+            if (this.getInput('leftKey') && this.getInput('rightKey')) {
                 if (this.p.direction == 'left') {
                     this.p.flip = false;
                 }
                 this.p.direction = 'right';
                 this.p.vx = 0;
-            } else if (Q.inputs['leftKey']) {
+            } else if (this.getInput('leftKey')) {
                 if (this.p.direction == 'right') {
                     this.p.flip = 'x';
                 }
                 this.p.direction = 'left';
                 this.p.vx = this.p.isJumping ? -this.p.speed / 2 : -this.p.speed;
-            } else if (Q.inputs['rightKey']) {
+            } else if (this.getInput('rightKey')) {
                 if (this.p.direction == 'left') {
                     this.p.flip = false;
                 }
@@ -96,6 +92,7 @@ function PlayerClass(Q) {
 
         onActionQ: function() {
             alert('Pressed Q');
+
         },
 
         onActionW: function() {
