@@ -8,7 +8,6 @@ var Poll = function(id, choices, server, pollRoomId){
 	
 	// save user vote
 	this.vote = function(id){
-		console.log('voted '+id);
 		if(this.choices[id].count){
 			this.choices[id].count ++;
 		}else{

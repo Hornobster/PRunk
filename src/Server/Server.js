@@ -36,7 +36,6 @@ io.on('connection', function (socket) {
     socket.on('setName', function (name) {
         if(typeof name === 'string'){
             socket.name = name;
-            console.log('setName');
         }else{
             socket.emit('err','invalidName');
         }
@@ -109,7 +108,7 @@ io.on('connection', function (socket) {
     socket.on('loadGame', function() {
         if(socket.room){
             if(socket.room.owener.id == socket.id){                
-                socket.room.load();
+                socket.room.load(); 
             }else{
                 socket.emit('err','you are not the owenr of the game');
             }
