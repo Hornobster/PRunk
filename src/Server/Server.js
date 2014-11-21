@@ -115,7 +115,30 @@ io.on('connection', function (socket) {
         }else{
             socket.emit('err','you are not in a game');
         }
-    }
+    });
+    
+    socket.on('startGame', function(){
+        if(socket.room){
+            if(socket.room.owener.id == socket.id){                
+                socket.room.start();
+            }else{
+                socket.emit('err','you are not the owenr of the game');
+            }
+        }else{
+            socket.emit('err','you are not in a game');
+        }
+    });
+    
+    socket.on('playerAction', function(obj){
+        if(socket.room){
+            obj.playerId = socket.id;
+            socket.room.broadcast(obj);
+        }else{
+            socket.emit('err','you are not in a game');
+        }
+    });
+              
+    
               
               
     

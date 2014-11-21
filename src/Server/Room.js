@@ -60,6 +60,11 @@ var Room = function(socket, server, roomsList, playersList){
         }
 	};    
     
+    this.broadcast = function(obj){        
+        if(this.status = 'inGame'){
+            this.io.to(this.id).emit('test', obj);
+        }
+    }
 	
 	// room id, this is is needed to join the play
 	this.id = socket.id + this.randomString(5);
