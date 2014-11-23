@@ -54,7 +54,7 @@ var Room = function(socket, server, roomsList, playersList){
 	this.start = function(){
         if(this.gameStatus == 'loading'){
             this.gameStatus = 'inGame';
-            this.io.to(this.id).emit('test','gameStart');
+            this.io.to(this.id).emit('start','gameStart');
         }else{
             this.owener.emit('err','you can\'t start the game now');
         }
