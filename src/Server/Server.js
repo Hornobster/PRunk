@@ -11,7 +11,7 @@ app.get('/', function (req, res) {
 });
 
 io.on('connection', function (socket) {      
-    
+    socket.emit('clientId', socket.id);
     
     
 // ########################## Initial Configuration #######################        
@@ -34,6 +34,7 @@ io.on('connection', function (socket) {
     
     //set palyer name
     socket.on('setName', function (name) {
+        console.log(name);
         if(typeof name === 'string'){
             socket.name = name;
         }else{
@@ -43,12 +44,14 @@ io.on('connection', function (socket) {
 
     //create game
     socket.on('createGame', function () {        
+        console.log('createGame');
         var r = new Room(socket, io, roomsList, playersList);
         roomsList[r.id] = r;
     });
 
     //jsoin game
     socket.on('joinGame', function (id) {
+        console.log('joinGame'+id);
         if (roomsList[id]) {
             roomsList[id].addPlayer(socket);
         }
@@ -56,6 +59,7 @@ io.on('connection', function (socket) {
 
     // leave game
     socket.on('leaveGame', function () {
+        console.log('leavGmae');
         if (socket.room) {
             socket.room.removePlayer(socket);
         }
@@ -63,7 +67,7 @@ io.on('connection', function (socket) {
     
     //the player start a new poll
     socket.on('startPoll', function (list) {
-        
+        console.log('startPoll');
         // check if list is valido or not
         var checkValidList = function(list){
             var keys = Object.keys(list);
@@ -93,19 +97,21 @@ io.on('connection', function (socket) {
     
     // the player stop the poll
     socket.on('stopPoll', function () {
+        console.log('stopPoll');
         if (socket.poll && socket.poll.status == 'voting') {
             socket.poll.closePoll();
         }
     });
 
     // send the poll result to the user
-    socket.on('pollResult', function () {
+    socket.on('pollResult', function () {        
         if (socket.poll) {
             socket.emit('test', socket.poll.getResult);
         }
     });
     
     socket.on('loadGame', function() {
+        console.log('loadGame');
         if(socket.room){
             if(socket.room.owener.id == socket.id){                
                 socket.room.load(); 
@@ -118,6 +124,7 @@ io.on('connection', function (socket) {
     });
     
     socket.on('startGame', function(){
+        console.log('startGame');
         if(socket.room){
             if(socket.room.owener.id == socket.id){                
                 socket.room.start();

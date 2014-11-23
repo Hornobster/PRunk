@@ -13,6 +13,16 @@
  * Setup a simple game loop
  */
 window.onload = function() {
+    
+    var client = new ClientWebSocket();
+    
+    document.getElementById('createGame').addEventListener('click', client.createGame);
+    document.getElementById('setName').addEventListener('click',  function(){client.setName(document.getElementById('inputName').value)});
+    document.getElementById('joinGame').addEventListener('click', function(){client.joinGame(document.getElementById('inputGameId').value)});
+    document.getElementById('loadGame').addEventListener('click', client.loadGame);
+    document.getElementById('startGame').addEventListener('click', client.startGame);
+    
+    
     var Q = window.Q = Quintus({development: true}) // remove development option to enable asset caching
         .include('Sprites, Input')
         .setup({
@@ -35,4 +45,5 @@ window.onload = function() {
 
     KeyboardInputComponent(Q);
     PlayerClass(Q);
+    
 };
