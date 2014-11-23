@@ -137,6 +137,7 @@ io.on('connection', function (socket) {
     });
     
     socket.on('playerAction', function(obj){
+        console.log(obj);
         if(socket.room){
             obj.playerId = socket.id;
             socket.room.broadcast(obj);

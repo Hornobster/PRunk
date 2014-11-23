@@ -62,7 +62,8 @@ var Room = function(socket, server, roomsList, playersList){
     
     this.broadcast = function(obj){        
         if(this.status = 'inGame'){
-            this.io.to(this.id).emit('test', obj);
+            console.log('broadcast');
+            this.io.to(this.id).emit('playerAction', obj);
         }
     }
 	

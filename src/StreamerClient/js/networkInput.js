@@ -11,6 +11,7 @@ function NetworkInputComponent(Q, Client) {
     Q.component('networkInput', {
         added: function () {
             // bind action events to the respective handlers
+            console.log(Client);
             Client.on('qKey', this.entity.p.id, this.entity, 'onActionQ');
             Client.on('wKey', this.entity.p.id, this.entity, 'onActionW');
             Client.on('eKey', this.entity.p.id, this.entity, 'onActionE');
@@ -21,7 +22,7 @@ function NetworkInputComponent(Q, Client) {
 
         extend: {
             getInput: function(input) {
-                return Client.inputs[input];
+                return Client.inputs[this.entity.p.id][input];
             }
         }
     });
