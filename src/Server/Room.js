@@ -44,7 +44,7 @@ var Room = function(socket, server, roomsList, playersList){
     this.load = function(){
         if(this.gameStatus == 'waiting'){
             this.gameStatus = 'loading';
-            this.io.to(this.id).emit('test','load map');
+            this.io.to(this.id).emit('load',{players: this.players});
         }else{
             this.owener.emit('err','you can\'t load the map now');
         }
@@ -54,7 +54,7 @@ var Room = function(socket, server, roomsList, playersList){
 	this.start = function(){
         if(this.gameStatus == 'loading'){
             this.gameStatus = 'inGame';
-            this.io.to(this.id).emit('test','gameStart');
+            this.io.to(this.id).emit('start','gameStart');
         }else{
             this.owener.emit('err','you can\'t start the game now');
         }
@@ -62,7 +62,8 @@ var Room = function(socket, server, roomsList, playersList){
     
     this.broadcast = function(obj){        
         if(this.status = 'inGame'){
-            this.io.to(this.id).emit('test', obj);
+            console.log('broadcast');
+            this.io.to(this.id).emit('playerAction', obj);
         }
     }
 	
@@ -83,7 +84,7 @@ var Room = function(socket, server, roomsList, playersList){
     // set the owener of the game. The owener can modify the settings of the game
     this.owener = socket;
     
-	socket.emit('test', this.id);
+	socket.emit('gameId', this.id);
 };
 
 module.exports = Room;

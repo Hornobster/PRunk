@@ -12,7 +12,8 @@
  *
  * Setup a simple game loop
  */
-window.onload = function() {
+function setupGame() {
+        
     var Q = window.Q = Quintus({development: true}) // remove development option to enable asset caching
         .include('Sprites, Input')
         .setup({
@@ -34,5 +35,19 @@ window.onload = function() {
     });
 
     KeyboardInputComponent(Q);
+    NetworkInputComponent(Q, window.client);
     PlayerClass(Q);
-};
+    console.log('game setup');
+}
+
+function startGame() {
+    var Q = window.Q;
+
+    Q.gameLoop(function (dt) {
+        Q.clear();
+        window.players.forEach(function (p) {
+            p.update(dt);
+            p.render(Q.ctx);
+        });
+    });
+}
