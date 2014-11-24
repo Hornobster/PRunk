@@ -38,6 +38,16 @@ function setupGame() {
     NetworkInputComponent(Q, window.client);
     PlayerClass(Q);
     console.log('game setup');
-};
+}
 
-function startGame(){};
+function startGame() {
+    var Q = window.Q;
+
+    Q.gameLoop(function (dt) {
+        Q.clear();
+        window.players.forEach(function (p) {
+            p.update(dt);
+            p.render(Q.ctx);
+        });
+    });
+}
