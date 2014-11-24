@@ -23,7 +23,7 @@ function KeyboardInputComponent(Q) {
             });
             
             Q.input.on('qKeyUp', this, function(){
-                this.sendEvent('qKey', true);
+                this.sendEvent('qKey', false);
             });
             
             Q.input.on('wKey', this, function(){
@@ -31,7 +31,7 @@ function KeyboardInputComponent(Q) {
             });
             
             Q.input.on('wKeyUp', this, function(){
-                this.sendEvent('wKey', true);
+                this.sendEvent('wKey', false);
             });
             
             Q.input.on('eKey', this, function(){
@@ -39,7 +39,7 @@ function KeyboardInputComponent(Q) {
             });
             
             Q.input.on('eKeyUp', this, function(){
-                this.sendEvent('eKey', true);
+                this.sendEvent('eKey', false);
             });
             
             Q.input.on('rKey', this, function(){
@@ -47,7 +47,7 @@ function KeyboardInputComponent(Q) {
             });
             
             Q.input.on('rKeyUp', this, function(){
-                this.sendEvent('rKey', true);
+                this.sendEvent('rKey', false);
             });
             
             Q.input.on('upKey', this, function(){
@@ -55,7 +55,7 @@ function KeyboardInputComponent(Q) {
             });
             
             Q.input.on('upKeyUp', this, function(){
-                this.sendEvent('upKey', true);
+                this.sendEvent('upKey', false);
             });
             
             Q.input.on('leftKey', this, function(){
@@ -63,7 +63,7 @@ function KeyboardInputComponent(Q) {
             });
             
             Q.input.on('leftKeyUp', this, function(){
-                this.sendEvent('leftKey', true);
+                this.sendEvent('leftKey', false);
             });
             
             Q.input.on('rightKey', this, function(){
@@ -71,7 +71,7 @@ function KeyboardInputComponent(Q) {
             });
             
             Q.input.on('rightKeyUp', this, function(){
-                this.sendEvent('rightKey', true);
+                this.sendEvent('rightKey', false);
             });
         },
         

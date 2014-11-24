@@ -4,3 +4,5 @@
 .DS_Store
 
 src/Server/node_modules
+
+*.log

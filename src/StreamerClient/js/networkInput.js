@@ -21,8 +21,8 @@ function NetworkInputComponent(Q, Client) {
         },
 
         extend: {
-            getInput: function(input) {
-                return Client.inputs[this.entity.p.id][input];
+            getInput: function (input) {
+                return Client.input[this.p.id][input];
             }
         }
     });
