@@ -24,17 +24,19 @@ var ClientWebSocket = function(){
     // load the game setup
     socket.on('load', function(obj){
         console.log(obj.players);
+	  window.players = [];
         setupGame();
         
         var ids = Object.keys(obj.players);
         for(var i=0; i<ids.length; i++){
             if(ids[i] != this.id){                
-                new Q.Player({x: Q.width/2, y: Q.height/2, id: ids[i], name: obj.players[ids[i]], inputComponent: 'networkInput'});
+                window.players.push(new Q.Player({x: Q.width/2, y: Q.height/2, id: ids[i], name: obj.players[ids[i]], inputComponent: 'networkInput'}));
             }else{
                 console.log('keybordInput');
-                new Q.Player({x: Q.width/2, y: Q.height/2, id: ids[i], name: obj.players[ids[i]], inputComponent: 'keyboardInput'});
+                window.players.push(new Q.Player({x: Q.width/2, y: Q.height/2, id: ids[i], name: obj.players[ids[i]], inputComponent: 'keyboardInput'}));
             }
         }     
+	  console.log(window.players);
     });
     
     // start the game

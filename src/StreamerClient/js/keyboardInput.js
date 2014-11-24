@@ -74,7 +74,7 @@ function KeyboardInputComponent(Q) {
                 this.sendEvent('rightKey', true);
             });
         },
-
+        
         extend: {
             getInput: function(input) {
                 return Q.inputs[input];
