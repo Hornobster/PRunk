@@ -20,6 +20,7 @@ body {
     max-width: 1024;
     background-color: #f4f4f4;
     height: 100%;
+    min-height: 800px;
 }
 
 .playerDiv {    
@@ -50,7 +51,7 @@ button {
 
 
 
-.listRoom tr{
+#listRoom tr{
     height: 40px;
     background: #fff;   
     width: 400px;
@@ -111,7 +112,39 @@ table.listPlayer {
     display: none;
 }
 
-table.listRoom {
+#listRoom {
     width: 100%;
     text-align: center;    
+}
+
+#quintusCanvas {
+    border: 1px solid #2388db;
+    margin: auto;
+    width: 800px;
+    height: 600px;
+}
+
+#gameDiv {
+    padding: 50px;
+    margin: auto;
+    width: 800px;
+    display: none;
+}
+
+#name {
+    display: block;
+    width: 250px;
+    height: 50px;
+    border: 1px solid #2388db;
+    margin: 0;    
+    background-color: #fff;
+    color: #000;
+    font-size: 1.2em;
+    margin: auto;
+    text-align: center;
+}
+
+#setName {
+    display: none;
+    padding: 50px;
 }
