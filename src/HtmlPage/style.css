@@ -1,0 +1,117 @@
+body {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+
+#logo {
+    width: 100%;
+    height: 100px;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 5em;
+    background-color: #2388db;
+    color: #fff
+    
+}
+
+#container {
+    max-width: 1024;
+    background-color: #f4f4f4;
+    height: 100%;
+}
+
+.playerDiv {    
+    float:left;
+    width: 50%;
+    margin: 0;
+}
+
+#menu {
+    margin: 0 auto;
+    padding-top:50px;
+    width: 100%;    
+    text-align: center;
+    display: block;
+}
+
+button {
+    display: block;
+    width: 250px;
+    height: 50px;
+    border: 1px solid #2388db;
+    margin: 0;    
+    background-color: #2499db;
+    color: #fff;
+    font-size: 1.2em;
+    margin: auto;
+}
+
+
+
+.listRoom tr{
+    height: 40px;
+    background: #fff;   
+    width: 400px;
+    cursor: pointer;
+}
+
+.listPlayer tr{
+    height: 40px;
+    background: #fff;   
+    width: 400px;
+}
+
+
+table.listPlayer {
+    width: 100%;
+    text-align: center
+}
+
+.settings {
+    margin:0;
+    float: right;
+    width: 50%;
+}
+
+.settings {
+    float: right;
+}
+
+#container {
+    margin: auto;
+}
+
+#createDiv {
+    padding: 50px;
+    display: none;
+}
+
+.settings input {
+    display: block;
+    width: 250px;
+    height: 50px;
+    border: 1px solid #2388db;
+    margin: 0;    
+    background-color: #fff;
+    color: #000;
+    font-size: 1.2em;
+    margin: auto;
+    text-align: center
+}
+
+#joinedDiv {
+    padding: 50px;
+    display:  none;
+}
+
+#joinDiv {
+    padding: 50px;
+    display: none;
+}
+
+table.listRoom {
+    width: 100%;
+    text-align: center;    
+}

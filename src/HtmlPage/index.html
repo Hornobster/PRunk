@@ -1,0 +1,58 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css"/>
+        <script src="link.js"></script>
+        <script>
+            window.onload = function(){
+                setLink();
+            }
+        </script>
+    </head>
+    <body>
+        <div id="container">
+            <div id="logo">PRunk</div>
+            <div id="menu">
+                <button id="createGame">Create</button>
+                <button id="join">Join</button>
+                <button id="spectate">Spectate</button>
+                <button id="credits">Credits</button>
+            </div>
+            <div id="createDiv">
+                <div class="playerDiv">
+                    <table class="listPlayer">
+                        <tr><td>Benfa</td></tr>
+                        <tr><td>Peve</td></tr>
+                    </table>
+                </div>
+                <div class="settings">
+                    <input id="blocksNumber" type="text" placeholder="number of block" value="5"/>
+                    <button id="start">Start</button>
+                    <button id="back1">Back</button>
+                </div>                
+            </div>
+            <div id="joinDiv">
+                <div class="roomDov">
+                    <table class="listRoom">
+                        <tr><td>Benfa</td></tr>
+                        <tr><td>Peve</td></tr>
+                    </table>
+                    <button id="back2">Back</button>
+                </div>
+            </div>
+            <div id="joinedDiv">
+                <div class="playerDiv">
+                    <table class="listPlayer">
+                        <tr><td>Benfa</td></tr>
+                        <tr><td>Peve</td></tr>
+                    </table>
+                </div>
+                <div class="settings">
+                    <input disabled id="blocksNumber" type="text" placeholder="number of block" value="5"/>
+                    <button id="back3">Back</button>
+                </div> 
+            </div>
+            <div id="spectateDiv"></div>
+            <div id="creditsDiv"></div>
+        </div>
+    </body>
+</html>
