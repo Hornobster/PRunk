@@ -20,7 +20,7 @@ body {
     max-width: 1024;
     background-color: #f4f4f4;
     height: 100%;
-    min-height: 800px;
+    min-height: 820px;
 }
 
 .playerDiv {    
@@ -147,4 +147,9 @@ table.listPlayer {
 #setName {
     display: none;
     padding: 50px;
+}
+
+#leaveGame {
+    margin-top: 10px; 
+    float: right;
 }

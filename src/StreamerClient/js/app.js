@@ -18,7 +18,7 @@ window.onload= function(){
         console.log(client.name);
         document.getElementById('setName').style.display = 'block'; 
         client.createGame();
-        window.currentPage = "createGame";
+        window.currentPage = "setName";
     });
     
     document.getElementById('createGame').addEventListener('click', function(){
@@ -69,6 +69,14 @@ window.onload= function(){
         hideAll();
         document.getElementById('menu').style.display = 'block';
         client.setName(document.getElementById('name').value);
+         window.currentPage = "menu";
+    });
+    
+    document.getElementById('leaveGame').addEventListener('click', function(){
+        hideAll();
+        document.getElementById('menu').style.display = 'block';
+        client.leftRoom();
+        window.currentPage = "menu";
     });
     
 }
