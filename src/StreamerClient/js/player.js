@@ -29,7 +29,16 @@ function PlayerClass(Q) {
                 vy: 0,
                 speed: 200,
                 isJumping: false,
-                inputComponent: 'keyboardInput'
+                inputComponent: 'keyboardInput',
+                equip: {
+                    head: null,
+                    chest: null,
+                    legs: null,
+                    feet: null,
+                    hand: null,
+                    offHand: null,
+                    mount: null
+                }
             });
 
             // add input component which will trigger input events
