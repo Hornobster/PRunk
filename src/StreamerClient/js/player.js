@@ -38,7 +38,8 @@ function PlayerClass(Q) {
                     hand: null,
                     offHand: null,
                     mount: null
-                }
+                },
+                buttonBindings: [null, null, null, null]
             });
 
             // add input component which will trigger input events
@@ -100,20 +101,35 @@ function PlayerClass(Q) {
         },
 
         onActionQ: function() {
-            alert('Pressed Q');
-
+            console.log('Pressed Q');
+            if (this.p.buttonBindings[0] !== null) {
+                console.log('Activated item ' + this.p.buttonBindings[0]);
+                this[this.p.buttonBindings[0]].activate();
+            }
         },
 
         onActionW: function() {
-            alert('Pressed W');
+            console.log('Pressed W');
+            if (this.p.buttonBindings[1] != null) {
+                console.log('Activated item ' + this.p.buttonBindings[1]);
+                this[this.p.buttonBindings[1]].activate();
+            }
         },
 
         onActionE: function() {
-            alert('Pressed E');
+            console.log('Pressed E');
+            if (this.p.buttonBindings[2] != null) {
+                console.log('Activated item ' + this.p.buttonBindings[2]);
+                this[this.p.buttonBindings[2]].activate();
+            }
         },
 
         onActionR: function() {
-            alert('Pressed R');
+            console.log('Pressed R');
+            if (this.p.buttonBindings[3] != null) {
+                console.log('Activated item ' + this.p.buttonBindings[3]);
+                this[this.p.buttonBindings[3]].activate();
+            }
         },
 
         onActionJump: function() {
