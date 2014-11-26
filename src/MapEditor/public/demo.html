@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script src='lib/quintus.js'></script>
+        <script src='lib/quintus_sprites.js'></script>
+        <script src='lib/quintus_scenes.js'></script>
+        <script src='lib/quintus_input.js'></script>
+        <script src='lib/quintus_anim.js'></script>
+        <script src='lib/quintus_2d.js'></script>
+        <script src='lib/quintus_touch.js'></script>
+        <script src='lib/quintus_ui.js'></script>
+        <script src='lib/marknote-debug.js'></script>
+    </head>
+    <!--<body style="background-color: black;">-->
+    <body>
+
+    <script>
+    var docs = [];
+    var widths=[];
+    var heights=[];
+    var fixed_tilewidth =70;
+    var fixed_tileheight =70;
+    var layer1=[]
+    var layer2=[]
+    var currentFile= 0;
+    var nFile=0;
+    var collisPoints = []
+    var relativePoints =[]
+    var max;
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~ START CREATING NEW XML MAP ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    function createNewXMLFile(){
+        var new_doc = new marknote.Document();
+        var mapTag = new marknote.Element("map");
+        var width = 0;
+        var height = 0;
+
+        for (var i = 0; i < widths.length; ++i) {
+            width += widths[i];
+        }
+
+        for(var x=0;x<heights.length;x ++){
+            relativePoints[x]=0;
+        }
+        console.log(collisPoints)
+        resizeMap()
+        var pi = new marknote.ProcessingInstruction();
+        new_doc.addProcessingInstruction(pi);
+        new_doc.setRootElement(mapTag)
+        mapTag.setAttribute("version", "1.0")
+        mapTag.setAttribute("orientation", "orthogonal")
+        mapTag.setAttribute("renderorder", "right-down")
+        mapTag.setAttribute("width", width)
+        mapTag.setAttribute("height", max)
+        mapTag.setAttribute("tilewidth", fixed_tilewidth)
+        mapTag.setAttribute("tileheight", fixed_tileheight)
+
+        var tilesetTag = new marknote.Element("tileset")
+        tilesetTag.setAttribute("firstgid", "1")
+        tilesetTag.setAttribute("name", "tiles_map")
+        tilesetTag.setAttribute("tilewidth", fixed_tilewidth)
+        tilesetTag.setAttribute("tileheight", fixed_tileheight)
+
+        var imageTag = new marknote.Element("image")
+        imageTag.setAttribute("source", "../images/tiles_map.png")
+        imageTag.setAttribute("width", "700")
+        imageTag.setAttribute("height", "140")
+
+        var layerTag = new marknote.Element("layer")
+        layerTag.setAttribute("name", "background")
+        layerTag.setAttribute("width", width)
+        layerTag.setAttribute("height", max)
+
+        var dataTag = new marknote.Element("data")
+
+        for (var y=0; y<max;y++){
+            for (var w=0; w< widths.length;w++){
+                for( var x=0; x<widths[w];x++){
+                    if ((calcShift(w)-y)>0 || y>=(heights[w]+calcShift(w))){
+                        var tileTag = new marknote.Element("tile");
+                        tileTag.setAttribute("gid", "9")
+                        dataTag.addChildElement(tileTag)
+                    }else{
+                        var tileTag = new marknote.Element("tile");
+                        tileTag.setAttribute("gid", docs[w]["rootElement"]["contents"][1]["contents"][0]["contents"][((y-calcShift(w))*widths[w])+x]["attributes"][0]["value"])
+                        dataTag.addChildElement(tileTag)
+                    }
+                }
+            }
+        }
+
+        tilesetTag.addChildElement(imageTag)
+        layerTag.addChildElement(dataTag)
+        mapTag.addChildElement(tilesetTag)
+        mapTag.addChildElement(layerTag)
+
+        var layerTag = new marknote.Element("layer")
+        layerTag.setAttribute("name", "collision")
+        layerTag.setAttribute("width", width)
+        layerTag.setAttribute("height", max)
+
+        var dataTag = new marknote.Element("data")
+
+        for (var y=0; y<max;y++){
+            for (var w=0; w< widths.length;w++){
+                for( var x=0; x<widths[w];x++){
+
+                    if ((calcShift(w)-y)>0 || y>=(heights[w]+calcShift(w))){
+                        var tileTag = new marknote.Element("tile");
+                        tileTag.setAttribute("gid", "0")
+                        dataTag.addChildElement(tileTag)
+                    }else{
+                        var tileTag = new marknote.Element("tile");
+                        tileTag.setAttribute("gid", docs[w]["rootElement"]["contents"][2]["contents"][1]["contents"][((y-calcShift(w))*widths[w])+x]["attributes"][0]["value"])
+                        dataTag.addChildElement(tileTag)
+                    }
+                }
+            }
+        }
+
+        layerTag.addChildElement(dataTag)
+        mapTag.addChildElement(layerTag)
+        return (new_doc.toString())
+
+    };
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END MAP CREATION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+
+
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~ START REQUESTING FILES TO SERVER ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    doJSONRequest('http://localhost:3000/',function(res){
+        var names = JSON.parse(res)
+        nFile = names.length;
+        for(var i=0; i<names.length; i++){
+            getXML(names[i]);
+        }
+    })
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END REQUESTING FILES TO SERVER ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+
+
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~ START RESIZING BIG-MAP ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    function resizeMap(){
+        max=heights[0];
+        for(var x=1; x<collisPoints.length-2;x+=2){
+            if(collisPoints[x+1]>(collisPoints[x]+relativePoints[parseInt(x/2)])){
+                for (var i=0;i<=parseInt(x/2);i++){
+                    relativePoints[i]+=(Math.abs(collisPoints[x+1]-(collisPoints[x])));
+                }
+                max+=(Math.abs(collisPoints[x+1]-(collisPoints[x])));
+            }else{
+                relativePoints[parseInt(x/2)+1]=(collisPoints[x]+relativePoints[parseInt(x/2)])- collisPoints[x+1]
+            }
+            if((heights[parseInt(x/2)+1]+relativePoints[parseInt(x/2)+1])>max){
+                max=heights[parseInt(x/2)+1]+relativePoints[parseInt(x/2)+1]
+            }
+        }
+    }
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END RESIZING BIG-MAP ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+
+
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~ START SHIFT COMPUTATOR ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    function calcShift(x){
+        return (max-relativePoints[x]-heights[x])
+    }
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END SHIFT COMPUTATOR ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+
+
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~ START AJAX CALLBACK TO GET XML FILES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    function myCallback(doc, params) {
+        if(doc["processingInstructions"][0]["target"]=="xml"){
+            console.log("Is a valid XML file")
+            docs.push(doc);
+            console.log(doc)
+            widths.push(parseInt(doc["rootElement"]["attributes"][3]["value"]))
+            heights.push(parseInt(doc["rootElement"]["attributes"][4]["value"]))
+            collisPoints.push(parseInt(doc["rootElement"]["contents"][2]["contents"][0]["contents"][0]["attributes"][1]["value"].split(",")[0]));
+            console.log((doc["rootElement"]["contents"][2]["contents"][0]["contents"][0]["attributes"][1]["value"].split(",")[0]))
+            collisPoints.push(parseInt(doc["rootElement"]["contents"][2]["contents"][0]["contents"][0]["attributes"][1]["value"].split(",")[1]));
+            console.log((doc["rootElement"]["contents"][2]["contents"][0]["contents"][0]["attributes"][1]["value"].split(",")[1]))
+        }
+        currentFile++;
+        if(currentFile==nFile) {
+            var xml_map = createNewXMLFile();
+        }
+    }
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END AJAX CALLBACK TO GET XML FILES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+
+
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~ START AJAX CALL TO GET XML FILES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    function getXML(name){
+
+        var url = "data/"+name;
+        var ajax = new marknote.AJAX();
+        var urlParams = {};
+        var callbackParams = {
+            path: url
+        }
+
+        ajax.read(
+                url,
+                urlParams,
+                myCallback,
+                callbackParams,
+                "GET"
+        );
+    }
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END AJAX CALL TO GET XML FILES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+
+
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~ START AJAX CALL TO GET XML FILE NAMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    function doJSONRequest(url, callback){
+
+        var xhr = new XMLHttpRequest();
+
+        xhr.open("GET", url, true);
+        xhr.onload = function(e) {
+            callback(xhr.responseText);
+        }
+        xhr.send();
+        }
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END AJAX CALL TO GET XML FILE NAMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+    var Q = Quintus()
+            .include("Sprites, Scenes, Input, 2D, Touch, UI")
+            .setup({
+                width: 960,
+                height: 640,
+                development: true
+            }).controls().touch();
+
+
+    //player
+    Q.Sprite.extend("Player",{
+        init: function(p) {
+            this._super(p, { asset: "player.png", x: 110, y: 50, jumpSpeed: -380});
+            this.add('2d, platformerControls');
+        },
+        step: function(dt) {
+            if(Q.inputs['left'] && this.p.direction == 'right') {
+                this.p.flip = 'x';
+            }
+            if(Q.inputs['right']  && this.p.direction == 'left') {
+                this.p.flip = false;
+            }
+        }
+    });
+
+
+    Q.scene("level1",function(stage) {
+
+        var background = new Q.TileLayer({ dataAsset: 'level1.tmx', layerIndex: 0, sheet: 'tiles', tileW: 70, tileH: 70, type: Q.SPRITE_NONE });
+        stage.insert(background);
+
+        stage.collisionLayer(new Q.TileLayer({ dataAsset: 'level1.tmx', layerIndex:1,  sheet: 'tiles', tileW: 70, tileH: 70 }));
+
+        var player = stage.insert(new Q.Player());
+
+        stage.add("viewport").follow(player,{x: true, y: true},{minX: 0, maxX: background.p.w, minY: 0, maxY: background.p.h});
+
+    });
+
+
+    //load assets
+    Q.load("tiles_map.png, player.png, a.tmx, b.tmx, c.tmx, d.tmx", function() {
+        Q.sheet("tiles","tiles_map.png", { tilew: 70, tileh: 70});
+        Q.stageScene("level1");
+    });
+
+    </script>
+    </body>
+</html>

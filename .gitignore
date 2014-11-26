@@ -3,6 +3,6 @@
 
 .DS_Store
 
-src/Server/node_modules
+node_modules
 
 *.log
