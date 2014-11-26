@@ -46,7 +46,7 @@ io.on('connection', function (socket) {
     socket.on('createGame', function () {        
         console.log('createGame');
         var r = new Room(socket, io, roomsList, playersList);
-        roomsList[r.id] = r;
+        roomsList[r.id] = r;        
     });
 
     //jsoin game
@@ -54,14 +54,6 @@ io.on('connection', function (socket) {
         console.log('joinGame'+id);
         if (roomsList[id]) {
             roomsList[id].addPlayer(socket);
-        }
-    });
-
-    // leave game
-    socket.on('leaveGame', function () {
-        console.log('leavGmae');
-        if (socket.room) {
-            socket.room.removePlayer(socket);
         }
     });
     
@@ -145,6 +137,12 @@ io.on('connection', function (socket) {
             socket.emit('err','you are not in a game');
         }
     });
+    
+    socket.on('ready', function(){
+        if(socket.room){
+            socket.room.ready(socket);
+        }
+    });
               
     
               
@@ -221,6 +219,27 @@ io.on('connection', function (socket) {
     
     
 // ######################## Global Event ################################
+    
+    // leave game
+    socket.on('leaveGame', function () {
+        console.log('leavGmae');
+        if (socket.room) {
+            socket.room.removePlayer(socket);
+        }
+    });
+    
+    socket.on('roomList', function() {
+        console.log('asd');
+        var keys = Object.keys(roomsList);
+        var list = [];
+        for(var i=0; i<keys.length; i++){
+            if(roomsList[keys[i]].gameStatus == 'waiting'){
+                list.push({name: roomsList[keys[i]].owener.name, id:roomsList[keys[i]].id});             
+            };
+        }
+        socket.emit('roomList', list);
+        
+    });
     
         //if a player get disconnected he will be removed form player list and from the game.
     socket.on('disconnect', function () {

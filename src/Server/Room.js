@@ -24,9 +24,8 @@ var Room = function(socket, server, roomsList, playersList){
 	};
 	
 	// send list of player
-	this.sendListPlayer = function(){
-		var s = JSON.stringify(this.players);
-		this.io.to(this.id).emit('test', s);
+	this.sendListPlayer = function(){	        
+		this.io.to(this.id).emit('listPlayers', this.players);
 	};
 
 	// generate random string of length len
@@ -53,6 +52,7 @@ var Room = function(socket, server, roomsList, playersList){
 	// start the game
 	this.start = function(){
         if(this.gameStatus == 'loading'){
+            console.log('startGame');
             this.gameStatus = 'inGame';
             this.io.to(this.id).emit('start','gameStart');
         }else{
@@ -62,8 +62,19 @@ var Room = function(socket, server, roomsList, playersList){
     
     this.broadcast = function(obj){        
         if(this.status = 'inGame'){
-            console.log('broadcast');
             this.io.to(this.id).emit('playerAction', obj);
+        }
+    }
+    
+    this.ready = function(socket){
+        if(this.gameStatus == 'loading'){
+            if(!socket.ready){
+                socket.ready = 1;
+                this.readyNumber++;
+                if(this.readyNumber == Object.keys(this.players).length){                    
+                    this.start();                    
+                }
+            }
         }
     }
 	
@@ -83,7 +94,9 @@ var Room = function(socket, server, roomsList, playersList){
 	this.addPlayer(socket);
     // set the owener of the game. The owener can modify the settings of the game
     this.owener = socket;
-    
+    // number of player ready
+    this.readyNumber = 0;
+        
 	socket.emit('gameId', this.id);
 };
 

@@ -13,15 +13,11 @@
  * Setup a simple game loop
  */
 function setupGame() {
-        
+       
     var Q = window.Q = Quintus({development: true}) // remove development option to enable asset caching
         .include('Sprites, Input')
-        .setup({
-            width: 1280,
-            height: 720,
-            scaleToFit: true
-        });
-
+        .setup("quintusCanvas")
+        
     // bind keycodes to Quintus events
     Q.input.keyboardControls({
         LEFT: "leftKey",
@@ -37,7 +33,7 @@ function setupGame() {
     KeyboardInputComponent(Q);
     NetworkInputComponent(Q, window.client);
     PlayerClass(Q);
-    console.log('game setup');
+    window.client.ready();
 }
 
 function startGame() {
