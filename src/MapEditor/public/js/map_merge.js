@@ -1,8 +1,8 @@
 
 
-createMap(["a.tmx","b.tmx","c.tmx","d.tmx"])
+//createMap(["a.tmx","b.tmx","c.tmx","d.tmx"],function(map){console.log(map)}) Function CALL example
 
-function createMap(mapList){
+function createMap(mapList, load){
     var docs = [];
     var widths=[];
     var heights=[];
@@ -52,10 +52,7 @@ function createMap(mapList){
 
         currentFile++;
         if(currentFile==nFile) {
-            createNewXMLFile(function(map) {
-                console.log(map)
-                //Map Load
-            });
+            createNewXMLFile(load);
 
         }
     }
