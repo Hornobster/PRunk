@@ -2009,7 +2009,7 @@
  </layer>
  <layer name="collision" width="40" height="50">
   <properties>
-   <property name="CHeight" value="24,40"/>
+   <property name="C_Height" value="24,40"/>
   </properties>
   <data>
    <tile gid="2"/>

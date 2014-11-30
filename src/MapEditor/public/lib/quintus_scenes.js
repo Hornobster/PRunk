@@ -203,7 +203,7 @@ Quintus.Scenes = function(Q) {
              (o1x+c1.w<o2x) || (o1x>o2x+c2.w));
   };
 
-  Q.Stage = Q.GameObject.extend({  //DA QUI INIZIA AD INTERESSARMI
+  Q.Stage = Q.GameObject.extend({
     // Should know whether or not the stage is paused
     defaults: {
       sort: false,
@@ -238,9 +238,9 @@ Quintus.Scenes = function(Q) {
 
     // Needs to be separated out so the current stage can be set
     loadScene: function() {
-//      if(this.scene)  {
+      if(this.scene)  { 
         this.scene.sceneFunc(this);
-//      }
+      }
     },
 
     // Load an array of assets of the form:
@@ -771,7 +771,6 @@ Quintus.Scenes = function(Q) {
   };
 
   Q.stageScene = function(scene,num,options) {
-
     // If it's a string, find a registered scene by that name
     if(Q._isString(scene)) {
       scene = Q.scene(scene);
@@ -796,9 +795,9 @@ Quintus.Scenes = function(Q) {
     num = Q._isUndefined(num) ? ((scene && scene.opts.stage) || 0) : num;
 
     // Clean up an existing stage if necessary
-//    if(Q.stages[num]) {
-//      Q.stages[num].destroy();
-//    }
+    if(Q.stages[num]) {
+      Q.stages[num].destroy();
+    }
 
     // Make this this the active stage and initialize the stage,
     // calling loadScene to popuplate the stage if we have a scene.
@@ -807,15 +806,11 @@ Quintus.Scenes = function(Q) {
 
     // Load an assets object array
     if(stage.options.asset) {
-
       stage.loadAssets();
-
     }
 
-    if(scene) { //QUI INIZIA FARE CACARE
-      //console.time("time");
+    if(scene) {
       stage.loadScene();
-        //console.timeEnd("time");
     }
     Q.activeStage = 0;
 
@@ -825,9 +820,7 @@ Quintus.Scenes = function(Q) {
     }
 
     // Finally return the stage to the user for use if needed
-
     return stage;
-
   };
 
   Q.stageGameLoop = function(dt) {

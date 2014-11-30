@@ -13,6 +13,10 @@ Quintus.Sprites = function(Q) {
   //  cols  - number of columns per row
   Q.Class.extend("SpriteSheet",{
     init: function(name, asset,options) {
+      console.log(Q.assets);
+      console.log(name);
+      console.log(asset);
+      console.log("**************")      
       if(!Q.asset(asset)) { throw "Invalid Asset:" + asset; }
       Q._extend(this,{
         name: name,

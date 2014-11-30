@@ -365,7 +365,7 @@ var Quintus = function Quintus(opts) {
       var dt = now - Q.lastGameLoopFrame;
       /* Prevent fast-forwarding by limiting the length of a single frame. */
       if(dt > Q.options.frameTimeLimit) { dt = Q.options.frameTimeLimit; }
-      callback.apply(Q,[dt / 1000]);
+      callback.apply(Q,[dt / 1000]);  
       Q.lastGameLoopFrame = now;
     };
 
@@ -424,13 +424,13 @@ var Quintus = function Quintus(opts) {
   //
   //     Q.Class.extend("Bird",{ 
   //       init: function(name) { this.name = name; },
-  //       speak: function() { console.log(this.name); },
-  //       fly: function()   { console.log("Flying"); }
+  //       speak: function() { 
+  //       fly: function()   { 
   //     });
   //
   //     Q.Bird.extend("Penguin",{
-  //       speak: function() { console.log(this.name + " the penguin"); },
-  //       fly: function()   { console.log("Can't fly, sorry..."); }
+  //       speak: function() { 
+  //       fly: function()   { 
   //     });
   //
   //     var randomBird = new Q.Bird("Frank"),
@@ -442,10 +442,10 @@ var Quintus = function Quintus(opts) {
   //     randomBird.speak(); // Logs "Frank"
   //     pengy.speak();      // Logs "Pengy the penguin"
   //
-  //     console.log(randomBird instanceof Q.Bird);    // true 
-  //     console.log(randomBird instanceof Q.Penguin); // false
-  //     console.log(pengy instanceof Q.Bird);         // true 
-  //     console.log(pengy instanceof Q.Penguin);      // true 
+  //     
+  //     
+  //     
+  //     
 
 
   /* Simple JavaScript Inheritance
@@ -1087,6 +1087,9 @@ var Quintus = function Quintus(opts) {
   // Loader for Images, creates a new `Image` object and uses the 
   // load callback to determine the image has been loaded
   Q.loadAssetImage = function(key,src,callback,errorCallback) {
+    
+    
+    
     var img = new Image();
     img.onload = function() {  callback(key,img); };
     img.onerror = errorCallback;
@@ -1215,6 +1218,9 @@ var Quintus = function Quintus(opts) {
   // Asset names default to their filenames, but can be overridden
   // by passing a hash to `load` to set different names.
   Q.asset = function(name) {
+    
+    
+    
     return Q.assets[name];
   };
 
@@ -1233,6 +1239,11 @@ var Quintus = function Quintus(opts) {
   //        Q.stageScene("level1"); // or something to start the game.
   //     });
   Q.load = function(assets,callback,options) {
+    
+    
+    
+    
+    
     var assetObj = {};
 
     /* Make sure we have an options hash to work with */
@@ -1275,6 +1286,7 @@ var Quintus = function Quintus(opts) {
     /* Closure'd per-asset callback gets called */
     /* each time an asset is successfully loadded */
     var loadedCallback = function(key,obj,force) {
+    
       if(errors) { return; }
 
       // Prevent double callbacks (I'm looking at you Firefox, canplaythrough
@@ -1303,22 +1315,31 @@ var Quintus = function Quintus(opts) {
 
     /* Now actually load each asset */
     Q._each(assetObj,function(itm,key) {
-
-      /* Determine the type of the asset */
-      var assetType = Q.assetType(itm);
-
-      /* If we already have the asset loaded, */
-      /* don't load it again */
-      if(Q.assets[key]) {
-        loadedCallback(key,Q.assets[key],true);
-      } else {
-        /* Call the appropriate loader function */
-        /* passing in our per-asset callback */
-        /* Dropping our asset by name into Q.assets */
-        Q["loadAsset" + assetType](key,itm,
-                                   loadedCallback,
-                                   function() { errorCallback(itm); });
-      }
+        var keySplitted = key.split('.');
+        
+        
+        if(1 && keySplitted[keySplitted.length-1]=='tmx'){
+            
+            loadedCallback(key,itm,true);
+        }else {
+            /* Determine the type of the asset */
+            var assetType = Q.assetType(itm);
+            
+            /* If we already have the asset loaded, */
+            /* don't load it again */
+            if (Q.assets[key]) {
+                loadedCallback(key, Q.assets[key], true);
+            } else {
+                /* Call the appropriate loader function */
+                /* passing in our per-asset callback */
+                /* Dropping our asset by name into Q.assets */
+                Q["loadAsset" + assetType](key, itm,
+                    loadedCallback,
+                    function () {
+                        errorCallback(itm);
+                    });
+            }
+        }
     });
 
   };

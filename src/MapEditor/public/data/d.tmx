@@ -1809,7 +1809,7 @@
  </layer>
  <layer name="collision" width="60" height="30">
   <properties>
-   <property name="CHeight" value="0,27"/>
+   <property name="C_Height" value="0,27"/>
   </properties>
   <data>
    <tile gid="0"/>
