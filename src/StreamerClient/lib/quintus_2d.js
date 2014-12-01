@@ -163,18 +163,18 @@ Quintus["2D"] = function(Q) {
     },
 
     load: function(dataAsset) {
-        //console.log(Q.asset(dataAsset));
       var fileParts = dataAsset.split("."),
         fileExt = fileParts[fileParts.length-1].toLowerCase();
 
       if (fileExt == "json") {  
         var data = Q._isString(dataAsset) ?  Q.asset(dataAsset) : dataAsset;
       }
+
+      //
       else if (fileExt == "tmx" || fileExt == "xml") {
         var parser = new DOMParser(),
           doc = parser.parseFromString(Q.asset(dataAsset), "application/xml");
-
-        //console.log(doc);
+        console.log(typeof (dataAsset) + dataAsset)
         var layer = doc.getElementsByTagName("layer")[this.p.layerIndex],
             width = parseInt(layer.getAttribute("width")),
             height = parseInt(layer.getAttribute("height"));
@@ -191,6 +191,8 @@ Quintus["2D"] = function(Q) {
           }
         }
       }
+
+      //
       else {
         throw "file type not supported";
       }

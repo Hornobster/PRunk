@@ -1,8 +1,8 @@
 
 
-//createMap(["a.tmx","b.tmx","c.tmx","d.tmx"],function(map){console.log(map)}) Function CALL example
+createMap(["a.tmx","b.tmx","c.tmx","d.tmx"],"http://10.62.161.181:8000/PRunk/src/MapEditor/public/data/",function(map){console.log(map)}) 
 
-function createMap(mapList, load){
+function createMap(mapList, path ,load){
     var docs = [];
     var widths=[];
     var heights=[];
@@ -24,7 +24,7 @@ function createMap(mapList, load){
 
     function getXML(name){
 
-        var url = "data/"+name;
+        var url = path+name;
         doJSONRequest(url,myCallback)
 
     }
