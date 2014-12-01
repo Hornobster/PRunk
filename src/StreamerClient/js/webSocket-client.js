@@ -48,7 +48,8 @@ var ClientWebSocket = function () {
                             y: Q.height / 2,
                             id: ids[i],
                             name: obj.players[ids[i]],
-                            inputComponent: 'networkInput'
+                            inputComponent: 'networkInput',
+                            asset: 'ghost.png'
                         })));
                     } else {
                         console.log('keyboardInput');
