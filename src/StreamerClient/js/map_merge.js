@@ -1,7 +1,3 @@
-
-
-createMap(["a.tmx","b.tmx","c.tmx","d.tmx"],"http://10.62.161.181:8000/PRunk/src/MapEditor/public/data/",function(map){console.log(map)}) 
-
 function createMap(mapList, path ,load){
     var docs = [];
     var widths=[];

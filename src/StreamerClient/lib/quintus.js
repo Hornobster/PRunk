@@ -1307,18 +1307,33 @@ var Quintus = function Quintus(opts) {
       /* Determine the type of the asset */
       var assetType = Q.assetType(itm);
 
-      /* If we already have the asset loaded, */
-      /* don't load it again */
-      if(Q.assets[key]) {
-        loadedCallback(key,Q.assets[key],true);
-      } else {
-        /* Call the appropriate loader function */
-        /* passing in our per-asset callback */
-        /* Dropping our asset by name into Q.assets */
-        Q["loadAsset" + assetType](key,itm,
-                                   loadedCallback,
-                                   function() { errorCallback(itm); });
-      }
+
+      var keySplitted = key.split('.');
+        
+        
+        if(1 && keySplitted[keySplitted.length-1]=='tmx'){
+            
+            loadedCallback(key,itm,true);
+        }else {
+            /* Determine the type of the asset */
+            var assetType = Q.assetType(itm);
+            
+            /* If we already have the asset loaded, */
+            /* don't load it again */
+            if (Q.assets[key]) {
+                loadedCallback(key, Q.assets[key], true);
+            } else {
+                /* Call the appropriate loader function */
+                /* passing in our per-asset callback */
+                /* Dropping our asset by name into Q.assets */
+                Q["loadAsset" + assetType](key, itm,
+                    loadedCallback,
+                    function () {
+                        errorCallback(itm);
+                    });
+            }
+        }
+
     });
 
   };
