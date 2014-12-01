@@ -30,7 +30,7 @@ var ClientWebSocket = function () {
     socket.on('load', function (obj) {
         console.log(obj.players);
         window.players = [];
-        setupGame();
+        setupGame(obj.maps);
 
         var c = this;
         Q.load('player.png', function () {
@@ -145,7 +145,8 @@ var ClientWebSocket = function () {
     }
 
     this.loadGame = function () {
-        socket.emit('loadGame');
+        blocksNumber = document.getElementById('blocksNumber').value;
+        socket.emit('loadGame', blocksNumber);        
     }
 
     this.startGame = function () {

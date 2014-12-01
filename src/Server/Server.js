@@ -5,6 +5,7 @@ var Room = require('./Room');
 var Poll = require('./Poll.js');
 var roomsList = {};
 var playersList = {};
+var maps = ['a.tmx','b.tmx','c.tmx','d.tmx'];
 
 app.get('/', function (req, res) {
     res.sendfile(__dirname + '/index.html');
@@ -45,7 +46,7 @@ io.on('connection', function (socket) {
     //create game
     socket.on('createGame', function () {        
         console.log('createGame');
-        var r = new Room(socket, io, roomsList, playersList);
+        var r = new Room(socket, io, roomsList, playersList, maps);
         roomsList[r.id] = r;        
     });
 
@@ -102,11 +103,11 @@ io.on('connection', function (socket) {
         }
     });
     
-    socket.on('loadGame', function() {
+    socket.on('loadGame', function(number) {
         console.log('loadGame');
         if(socket.room){
             if(socket.room.owener.id == socket.id){                
-                socket.room.load(); 
+                socket.room.load(number); 
             }else{
                 socket.emit('err','you are not the owenr of the game');
             }

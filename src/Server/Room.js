@@ -1,4 +1,4 @@
-var Room = function(socket, server, roomsList, playersList){
+var Room = function(socket, server, roomsList, playersList, mapList){
 	// add player to the current game
 	this.addPlayer = function(socket){
 		if(socket.room){
@@ -40,10 +40,17 @@ var Room = function(socket, server, roomsList, playersList){
 	};
 	
     
-    this.load = function(){
+    this.load = function(number){
         if(this.gameStatus == 'waiting'){
             this.gameStatus = 'loading';
-            this.io.to(this.id).emit('load',{players: this.players});
+            if(!number){
+            	number = 5;
+            }
+            var mapSequence = [];
+            for(var i=0; i<number; i++){
+            	mapSequence.push(this.mapList[Math.floor(Math.random() * this.mapList.length)]);
+            }
+            this.io.to(this.id).emit('load',{players: this.players, maps: mapSequence});
         }else{
             this.owener.emit('err','you can\'t load the map now');
         }
@@ -96,7 +103,8 @@ var Room = function(socket, server, roomsList, playersList){
     this.owener = socket;
     // number of player ready
     this.readyNumber = 0;
-        
+    // list of all possible map
+    this.mapList = mapList;        
 	socket.emit('gameId', this.id);
 };
 

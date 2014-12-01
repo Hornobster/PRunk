@@ -12,7 +12,7 @@
  *
  * Setup a simple game loop
  */
-function setupGame() {
+function setupGame(mapList) {
        
     var Q = window.Q = Quintus({development: true, imagePath: "http://suff.me/PRunk/images/"}) // remove development option to enable asset caching
         .include('Sprites, Input, Scenes, 2D')
@@ -35,7 +35,7 @@ function setupGame() {
     NetworkInputComponent(Q, window.client);
     PlayerClass(Q);
 
-    createMap(["a.tmx","b.tmx","c.tmx","d.tmx"],"http://suff.me/PRunk/map/",function(s){
+    createMap(mapList,"http://suff.me/PRunk/map/",function(s){
         window.Q.load('tiles_map.png', function(){
             window.Q.load({'map.tmx':s},function(){
                 window.Q.sheet('tiles','tiles_map.png',{tilew: 70, tileh: 70});
