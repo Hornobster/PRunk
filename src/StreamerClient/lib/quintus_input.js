@@ -79,9 +79,11 @@ Quintus.Input = function(Q) {
       Q.el.addEventListener("keydown",function(e) {
         if(Q.input.keys[e.keyCode]) {
           var actionName = Q.input.keys[e.keyCode];
-          Q.inputs[actionName] = true;
-          Q.input.trigger(actionName);
-          Q.input.trigger('keydown',e.keyCode);
+          if (Q.inputs[actionName] === false || !Q.inputs[actionName]) {
+            Q.inputs[actionName] = true;
+            Q.input.trigger(actionName);
+            Q.input.trigger('keydown', e.keyCode);
+          }
         }
         e.preventDefault();
       },false);

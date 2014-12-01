@@ -42,11 +42,14 @@ function PlayerClass(Q) {
                 buttonBindings: [null, null, null, null]
             });
 
+            // add collision component for collision events
+            this.add('playerCollision');
+
             // add input component which will trigger input events
             this.add(this.p.inputComponent);
 
             // bind event handlers
-            this.on('landed', this, this.onLand);
+            this.on('bump.bottom', this, this.onLand);
         },
 
         step: function(dt) {
@@ -80,24 +83,7 @@ function PlayerClass(Q) {
             this.p.x += this.p.vx * dt;
             this.p.y += this.p.vy * dt;
 
-
-            // testing code, will be substituted by stages and collisions
-            // sets an invisible floor at 200px from the bottom
-            // sets invisible walls at the sides
-            if (this.p.y + this.p.cy > Q.height - 200) {
-                this.p.y = Q.height - 200 - this.p.cy;
-                this.p.vy = 0;
-
-                this.trigger('landed');
-            }
-
-            if (this.p.x + this.p.cx > Q.width) {
-                this.p.x = Q.width - this.p.cx;
-            }
-
-            if (this.p.x - this.p.cx < 0) {
-                this.p.x = this.p.cx;
-            }
+            this.stage.collide(this);
         },
 
         onActionQ: function() {

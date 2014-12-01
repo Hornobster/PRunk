@@ -34,28 +34,38 @@ var ClientWebSocket = function () {
 
         var c = this;
         Q.load('player.png', function () {
-            var ids = Object.keys(obj.players);
-            for (var i = 0; i < ids.length; i++) {
-                if (ids[i] != c.id) {
-                    window.players.push(new Q.Player({
-                        x: Q.width / 2,
-                        y: Q.height / 2,
-                        id: ids[i],
-                        name: obj.players[ids[i]],
-                        inputComponent: 'networkInput'
-                    }));
-                } else {
-                    console.log('keyboardInput');
-                    window.players.push(new Q.Player({
-                        x: Q.width / 2,
-                        y: Q.height / 2,
-                        id: ids[i],
-                        name: obj.players[ids[i]],
-                        inputComponent: 'keyboardInput'
-                    }));
+            Q.scene("map", function (stage) {
+                var background = new Q.TileLayer({ dataAsset: 'map.tmx', layerIndex: 0, sheet: 'tiles', tileW: 70, tileH: 70, type: Q.SPRITE_NONE });
+                stage.insert(background);
+                stage.collisionLayer(new Q.TileLayer({ dataAsset: 'map.tmx', layerIndex: 1, sheet: 'tiles', tileW: 70, tileH: 70 }));
+
+
+                var ids = Object.keys(obj.players);
+                for (var i = 0; i < ids.length; i++) {
+                    if (ids[i] != c.id) {
+                        window.players.push(stage.insert(new Q.Player({
+                            x: Q.width / 2,
+                            y: Q.height / 2,
+                            id: ids[i],
+                            name: obj.players[ids[i]],
+                            inputComponent: 'networkInput'
+                        })));
+                    } else {
+                        console.log('keyboardInput');
+                        var currentPlayer = stage.insert(new Q.Player({
+                            x: Q.width / 2,
+                            y: Q.height / 2,
+                            id: ids[i],
+                            name: obj.players[ids[i]],
+                            inputComponent: 'keyboardInput'
+                        }));
+                        window.players.push(currentPlayer);
+
+                        stage.add("viewport").follow(currentPlayer);
+                    }
                 }
-            }
-            console.log(window.players);
+                console.log(window.players);
+            });
         });
     });
 
