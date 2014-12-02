@@ -33,7 +33,7 @@ var ClientWebSocket = function () {
         setupGame(obj.maps);
 
         var c = this;
-        Q.load('player.png', function () {
+        Q.load(['player.png', 'ghost.png'], function () {
             Q.scene("map", function (stage) {
                 var background = new Q.TileLayer({ dataAsset: 'map.tmx', layerIndex: 0, sheet: 'tiles', tileW: 70, tileH: 70, type: Q.SPRITE_NONE });
                 stage.insert(background);
@@ -50,6 +50,7 @@ var ClientWebSocket = function () {
                             name: obj.players[ids[i]],
                             inputComponent: 'networkInput',
                             asset: 'ghost.png'
+                            //type: Q.SPRITE_PARTICLE // sprite defaults to type: Q.SPRITE_DEFAULT | Q.SPRITE_ACTIVE, needed for collisions
                         })));
                     } else {
                         console.log('keyboardInput');
