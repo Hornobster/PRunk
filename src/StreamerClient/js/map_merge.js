@@ -78,6 +78,7 @@ function createMap(mapList, path ,load){
         }
 
         resizeMap()
+        window.startPoint= (max-(relativePoints[0]+collisPoints[0])-3)*70;
 
         mapTag.setAttribute("version", "1.0")
         mapTag.setAttribute("orientation", "orthogonal")

@@ -60,8 +60,8 @@ var ClientWebSocket = function () {
                         for (var i = 0; i < ids.length; i++) {
                             if (ids[i] != c.id) {
                                 window.players.push(stage.insert(new Q.Player({
-                                    x: Q.width / 2,
-                                    y: Q.height / 2,
+                                    x: 300,
+                                    y: window.startPoint,
                                     id: ids[i],
                                     name: obj.players[ids[i]],
                                     inputComponent: 'networkInput',
@@ -70,8 +70,8 @@ var ClientWebSocket = function () {
                                 })));
                             } else {
                                 var currentPlayer = stage.insert(new Q.Player({
-                                    x: Q.width / 2,
-                                    y: Q.height / 2,
+                                    x: 300,
+                                    y: window.startPoint,
                                     id: ids[i],
                                     name: obj.players[ids[i]],
                                     inputComponent: 'keyboardInput'
