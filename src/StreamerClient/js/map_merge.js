@@ -21,39 +21,48 @@ function createMap(mapList, path ,load){
     function getXML(name){
 
         var url = path+name;
-        doJSONRequest(url,myCallback)
+        doJSONRequest(url,myCallback, name)
 
     }
 
-    function doJSONRequest(url, callback){
+    function doJSONRequest(url, callback ,name){
 
         var xhr = new XMLHttpRequest();
 
         xhr.open("GET", url, true);
         xhr.onload = function(e) {
-            callback(xhr.responseText);
+            callback(xhr.responseText, name);
         }
         xhr.send();
     }
 
-    function myCallback(doc) {
+    function myCallback(doc, name) {
 
         var parser = new DOMParser();
         var doc = parser.parseFromString(doc, "application/xml");
-        docs.push(doc);
-        widths.push(parseInt(doc.querySelectorAll("map")['0'].attributes.width.value));
-        heights.push(parseInt(doc.querySelectorAll("map")['0'].attributes.height.value));
-        collisPoints.push(parseInt(doc.querySelectorAll("properties")['0'].children['0'].attributes['1'].nodeValue.split(",")[0]));
-        collisPoints.push(parseInt(doc.querySelectorAll("properties")['0'].children['0'].attributes['1'].nodeValue.split(",")[1]));
+        var obj = {}
+        docs[name] = doc;
+        
 
         currentFile++;
         if(currentFile==nFile) {
             createNewXMLFile(load);
-
         }
     }
 
     function createNewXMLFile(callback){
+        doc_2 = []
+        for(var i=0; i<mapList.length; i++){
+            console.log(docs[mapList[i]]);
+            doc_2.push(docs[mapList[i]]);
+            widths.push(parseInt(docs[mapList[i]].querySelectorAll("map")['0'].attributes.width.value));
+            heights.push(parseInt(docs[mapList[i]].querySelectorAll("map")['0'].attributes.height.value));
+            collisPoints.push(parseInt(docs[mapList[i]].querySelectorAll("properties")['0'].children['0'].attributes['1'].nodeValue.split(",")[0]));
+            collisPoints.push(parseInt(docs[mapList[i]].querySelectorAll("properties")['0'].children['0'].attributes['1'].nodeValue.split(",")[1]));
+        }
+        docs = doc_2;
+        console.log(docs);
+
         new_doc = document.implementation.createDocument("","", null)
 
         var mapTag = new_doc.createElement("map");
@@ -108,6 +117,7 @@ function createMap(mapList, path ,load){
                         dataTag.appendChild(tileTag)
                     }else{
                         var tileTag = new_doc.createElement("tile")
+                        //console.log(docs[w].querySelectorAll("data")['0']);
                         tileTag.setAttribute("gid", docs[w].querySelectorAll("data")['0'].children[((y-calcShift(w))*widths[w])+x].attributes['0'].nodeValue)
                         dataTag.appendChild(tileTag)
                     }
