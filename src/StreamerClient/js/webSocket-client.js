@@ -33,42 +33,64 @@ var ClientWebSocket = function () {
         setupGame(obj.maps);
 
         var c = this;
-        Q.load(['player.png', 'ghost.png'], function () {
-            Q.scene("map", function (stage) {
-                var background = new Q.TileLayer({ dataAsset: 'map.tmx', layerIndex: 0, sheet: 'tiles', tileW: 70, tileH: 70, type: Q.SPRITE_NONE });
-                stage.insert(background);
-                stage.collisionLayer(new Q.TileLayer({ dataAsset: 'map.tmx', layerIndex: 1, sheet: 'tiles', tileW: 70, tileH: 70 }));
+        createMap(obj.maps,"http://suff.me/PRunk/map/",function(s){
+            window.Q.load(['tiles_map.png', 'player.png', 'ghost.png'], function(){
+                window.Q.load({'map.tmx':s},function(){
+                    window.Q.sheet('tiles','tiles_map.png',{tilew: 70, tileh: 70});
 
-
-                var ids = Object.keys(obj.players);
-                for (var i = 0; i < ids.length; i++) {
-                    if (ids[i] != c.id) {
-                        window.players.push(stage.insert(new Q.Player({
-                            x: Q.width / 2,
-                            y: Q.height / 2,
-                            id: ids[i],
-                            name: obj.players[ids[i]],
-                            inputComponent: 'networkInput',
-                            asset: 'ghost.png'
-                            //type: Q.SPRITE_PARTICLE // sprite defaults to type: Q.SPRITE_DEFAULT | Q.SPRITE_ACTIVE, needed for collisions
-                        })));
-                    } else {
-                        console.log('keyboardInput');
-                        var currentPlayer = stage.insert(new Q.Player({
-                            x: Q.width / 2,
-                            y: Q.height / 2,
-                            id: ids[i],
-                            name: obj.players[ids[i]],
-                            inputComponent: 'keyboardInput'
+                    Q.scene("map", function (stage) {
+                        var background = new Q.TileLayer({
+                            dataAsset: 'map.tmx',
+                            layerIndex: 0,
+                            sheet: 'tiles',
+                            tileW: 70,
+                            tileH: 70,
+                            type: Q.SPRITE_NONE
+                        });
+                        stage.insert(background);
+                        stage.collisionLayer(new Q.TileLayer({
+                            dataAsset: 'map.tmx',
+                            layerIndex: 1,
+                            sheet: 'tiles',
+                            tileW: 70,
+                            tileH: 70
                         }));
-                        window.players.push(currentPlayer);
 
-                        stage.add("viewport").follow(currentPlayer);
-                    }
-                }
-                console.log(window.players);
+
+                        var ids = Object.keys(obj.players);
+                        for (var i = 0; i < ids.length; i++) {
+                            if (ids[i] != c.id) {
+                                window.players.push(stage.insert(new Q.Player({
+                                    x: Q.width / 2,
+                                    y: Q.height / 2,
+                                    id: ids[i],
+                                    name: obj.players[ids[i]],
+                                    inputComponent: 'networkInput',
+                                    asset: 'ghost.png'
+                                    //type: Q.SPRITE_PARTICLE // sprite defaults to type: Q.SPRITE_DEFAULT | Q.SPRITE_ACTIVE, needed for collisions
+                                })));
+                            } else {
+                                console.log('keyboardInput');
+                                var currentPlayer = stage.insert(new Q.Player({
+                                    x: Q.width / 2,
+                                    y: Q.height / 2,
+                                    id: ids[i],
+                                    name: obj.players[ids[i]],
+                                    inputComponent: 'keyboardInput'
+                                }));
+                                window.players.push(currentPlayer);
+
+                                stage.add("viewport").follow(currentPlayer);
+                            }
+                        }
+                        console.log(window.players);
+                    });
+
+                    window.client.ready();
+                })
             });
-        });
+        })
+
     });
 
     // start the game

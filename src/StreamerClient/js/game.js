@@ -34,15 +34,6 @@ function setupGame(mapList) {
     KeyboardInputComponent(Q);
     NetworkInputComponent(Q, window.client);
     PlayerClass(Q);
-
-    createMap(mapList,"http://suff.me/PRunk/map/",function(s){
-        window.Q.load('tiles_map.png', function(){
-            window.Q.load({'map.tmx':s},function(){
-                window.Q.sheet('tiles','tiles_map.png',{tilew: 70, tileh: 70});
-                window.client.ready();
-            })
-        });
-    }) 
     
 }
 
