@@ -1,5 +1,5 @@
 var ClientWebSocket = function () {
-    var socket = io('ws://localhost:3000');
+    var socket = io('ws://10.62.161.181:3000');
     var entityEventMap = {};
     this.id = null;
     this.name = null;
@@ -15,7 +15,6 @@ var ClientWebSocket = function () {
     socket.on('clientId', function (id) {
         //document.getElementById("socketId").innerHTML = id;
         this.id = id;       
-        console.log(id);
         if(this.name == null){
             window.client.name = id;            
         }                    
@@ -28,7 +27,7 @@ var ClientWebSocket = function () {
 
     // load the game setup
     socket.on('load', function (obj) {
-        console.log(obj.players);
+        console.log(obj.maps);
         window.players = [];
         setupGame(obj.maps);
 
@@ -70,7 +69,6 @@ var ClientWebSocket = function () {
                                     //type: Q.SPRITE_PARTICLE // sprite defaults to type: Q.SPRITE_DEFAULT | Q.SPRITE_ACTIVE, needed for collisions
                                 })));
                             } else {
-                                console.log('keyboardInput');
                                 var currentPlayer = stage.insert(new Q.Player({
                                     x: Q.width / 2,
                                     y: Q.height / 2,
@@ -83,7 +81,6 @@ var ClientWebSocket = function () {
                                 stage.add("viewport").follow(currentPlayer);
                             }
                         }
-                        console.log(window.players);
                     });
 
                     window.client.ready();
@@ -109,17 +106,16 @@ var ClientWebSocket = function () {
         if (obj.playerId != this.id) {
             if (inputKeys.indexOf(obj.event) >= 0) {
                 window.client.input[obj.playerId][obj.event] = obj.value;
-                // call the event only whe the keys are pressed
+                entityEventMap[obj.playerId].entity.p.x = obj.x;
+                entityEventMap[obj.playerId].entity.p.y = obj.y;
+                // call the event only when the keys are pressed
                 if (obj.value) {
                     // check if there is a function linked to that event
                     if (entityEventMap[obj.playerId][obj.event]) {
-                        var functionName = entityEventMap[obj.playerId][obj.event];
-                        entityEventMap[obj.playerId].entity.p.x = obj.x;
-                        entityEventMap[obj.playerId].entity.p.y = obj.y;
+                        var functionName = entityEventMap[obj.playerId][obj.event];                        
                         entityEventMap[obj.playerId].entity[functionName]();
                     }
                 }
-                console.log(window.client.input[obj.playerId]);
             }
         }
     });
