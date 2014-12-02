@@ -39,7 +39,7 @@ function setupGame(mapList) {
 
 function startGame() {
     var Q = window.Q;
-    window.Q.stageScene('map');
+    window.Q.stageScene('map', {sort: true});
 
     // Q.gameLoop(function (dt) {
     //     Q.clear();

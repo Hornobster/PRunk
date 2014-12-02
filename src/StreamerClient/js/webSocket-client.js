@@ -62,16 +62,19 @@ var ClientWebSocket = function () {
                                 window.players.push(stage.insert(new Q.Player({
                                     x: 300,
                                     y: window.startPoint,
+                                    z: 1000,
                                     id: ids[i],
                                     name: obj.players[ids[i]],
                                     inputComponent: 'networkInput',
-                                    asset: 'ghost.png'
-                                    //type: Q.SPRITE_PARTICLE // sprite defaults to type: Q.SPRITE_DEFAULT | Q.SPRITE_ACTIVE, needed for collisions
+                                    asset: 'ghost.png',
+                                    type: Q.SPRITE_NONE,
+                                    collisionMask: ~Q.SPRITE_ACTIVE
                                 })));
                             } else {
                                 var currentPlayer = stage.insert(new Q.Player({
                                     x: 300,
                                     y: window.startPoint,
+                                    z: 10000,
                                     id: ids[i],
                                     name: obj.players[ids[i]],
                                     inputComponent: 'keyboardInput'
