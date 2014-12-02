@@ -16,8 +16,7 @@ window.onload= function(){
         hideAll();
         document.getElementById('name').value = client.name;
         console.log(client.name);
-        document.getElementById('setName').style.display = 'block'; 
-        client.createGame();
+        document.getElementById('setName').style.display = 'block';         
         window.currentPage = "setName";
     });
     
