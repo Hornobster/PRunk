@@ -29,8 +29,7 @@ var ClientWebSocket = function () {
     socket.on('load', function (obj) {
         console.log(obj.maps);
         window.players = [];
-        setupGame(obj.maps);
-
+        setupGame(obj.maps);        
         var c = this;
         createMap(obj.maps,"http://suff.me/PRunk/map/",function(s){
             window.Q.load(['tiles_map.png', 'player.png', 'ghost.png'], function(){
@@ -61,7 +60,7 @@ var ClientWebSocket = function () {
                             if (ids[i] != c.id) {
                                 window.players.push(stage.insert(new Q.Player({
                                     x: 300,
-                                    y: window.startPoint,
+                                    y: window.mapProperties.playerStart*70,
                                     z: 1000,
                                     id: ids[i],
                                     name: obj.players[ids[i]],
@@ -73,7 +72,7 @@ var ClientWebSocket = function () {
                             } else {
                                 var currentPlayer = stage.insert(new Q.Player({
                                     x: 300,
-                                    y: window.startPoint,
+                                    y: window.mapProperties.playerStart*70,
                                     z: 10000,
                                     id: ids[i],
                                     name: obj.players[ids[i]],
@@ -95,6 +94,7 @@ var ClientWebSocket = function () {
 
     // start the game
     socket.on('start', function () {    
+        console.log(window.mapProperties);
         showGame();
         startGame();
     });

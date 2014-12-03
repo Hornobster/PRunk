@@ -1,6 +1,3 @@
-
-createMap(["a.tmx","b.tmx","c.tmx","d.tmx"],"data/",function(s){console.log(s)})
-
 function createMap(mapList, path ,load){
 
     var docs = [];
@@ -87,9 +84,7 @@ function createMap(mapList, path ,load){
         }
 
         resizeMap()
-        window.startPoint= (max-(relativePoints[0]+collisPoints[0])-3)*70;
-
-        block_properties["playerStart"]=relativePoints[0]+collisPoints[0];
+        block_properties["playerStart"]=max-(relativePoints[0]+collisPoints[0])-3;
         block_properties["pollStart"]=[]
         block_properties["pollStop"] =[]
 
