@@ -1,19 +1,30 @@
-function createMap(mapList, path ,load){
-    var docs = [];
-    var widths=[];
-    var heights=[];
-    var fixed_tilewidth =70;
-    var fixed_tileheight =70;
-    var currentFile= 0;
-    var nFile=0;
-    var collisPoints = []
-    var relativePoints =[]
-    var max;
-    var new_doc;
-    var s;
 
+createMap(["a.tmx","b.tmx","c.tmx","d.tmx"],"data/",function(s){console.log(s)})
+
+function createMap(mapList, path ,load){
+
+    var docs = [];
+    var docs_copy = [];
+    var new_doc;
+
+    var widths = [];
+    var partialW = 0;
+    var heights=[];
+    var fixed_tilewidth = 70;
+    var fixed_tileheight = 70;
+    var max;
+
+    var currentFile = 0;
+    var nFile;
+
+    var collisPoints = []
+    var relativePoints = []
+
+    var stringXML;
+    var block_properties = {}
 
     nFile = mapList.length;
+
     for(var i=0; i<mapList.length; i++){
         getXML(mapList[i]);
     }
@@ -40,7 +51,6 @@ function createMap(mapList, path ,load){
 
         var parser = new DOMParser();
         var doc = parser.parseFromString(doc, "application/xml");
-        var obj = {}
         docs[name] = doc;
         
 
@@ -51,17 +61,16 @@ function createMap(mapList, path ,load){
     }
 
     function createNewXMLFile(callback){
-        doc_2 = []
+
         for(var i=0; i<mapList.length; i++){
-            console.log(docs[mapList[i]]);
-            doc_2.push(docs[mapList[i]]);
+            docs_copy.push(docs[mapList[i]]);
             widths.push(parseInt(docs[mapList[i]].querySelectorAll("map")['0'].attributes.width.value));
             heights.push(parseInt(docs[mapList[i]].querySelectorAll("map")['0'].attributes.height.value));
             collisPoints.push(parseInt(docs[mapList[i]].querySelectorAll("properties")['0'].children['0'].attributes['1'].nodeValue.split(",")[0]));
             collisPoints.push(parseInt(docs[mapList[i]].querySelectorAll("properties")['0'].children['0'].attributes['1'].nodeValue.split(",")[1]));
         }
-        docs = doc_2;
-        console.log(docs);
+
+        docs = docs_copy;
 
         new_doc = document.implementation.createDocument("","", null)
 
@@ -79,6 +88,23 @@ function createMap(mapList, path ,load){
 
         resizeMap()
         window.startPoint= (max-(relativePoints[0]+collisPoints[0])-3)*70;
+
+        block_properties["playerStart"]=relativePoints[0]+collisPoints[0];
+        block_properties["pollStart"]=[]
+        block_properties["pollStop"] =[]
+
+
+        for (var z=0; z< collisPoints.length; z++){
+            if (z%2==0){
+                block_properties["pollStart"].push({"x":partialW, "passedTrough":false})
+            }else{
+                partialW+=widths[parseInt(z/2)]
+                block_properties["pollStop"].push({"x":partialW, "passedTrough":false})
+            }
+
+        }
+
+        window.mapProperties = block_properties
 
         mapTag.setAttribute("version", "1.0")
         mapTag.setAttribute("orientation", "orthogonal")
@@ -118,7 +144,6 @@ function createMap(mapList, path ,load){
                         dataTag.appendChild(tileTag)
                     }else{
                         var tileTag = new_doc.createElement("tile")
-                        //console.log(docs[w].querySelectorAll("data")['0']);
                         tileTag.setAttribute("gid", docs[w].querySelectorAll("data")['0'].children[((y-calcShift(w))*widths[w])+x].attributes['0'].nodeValue)
                         dataTag.appendChild(tileTag)
                     }
@@ -165,8 +190,8 @@ function createMap(mapList, path ,load){
         layerTag.appendChild(dataTag)
         mapTag.appendChild(layerTag)
         new_doc.appendChild(mapTag)
-        s=(new XMLSerializer()).serializeToString(new_doc);
-        callback(s)
+        stringXML=(new XMLSerializer()).serializeToString(new_doc);
+        callback(stringXML)
 
     }
 
@@ -192,6 +217,5 @@ function createMap(mapList, path ,load){
     }
 
 }
-
 
 
