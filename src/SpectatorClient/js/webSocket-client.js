@@ -7,17 +7,26 @@ var ClientWebSocket = function () {
     
     });
 
-    socket.on('startPoll', list){
+    socket.on('view', function(){        
+        view();
+    });
 
-    }
+    socket.on('startPoll', function(list){
 
-    socket.on('endPoll'){
+    });
 
-    }
+    socket.on('endPoll', function(){
 
-    socket.on('err',message){
-    	alert(message);
-    }
+    })
+
+    socket.on('err',function(message){
+    	this.listPlayer();
+    })
+
+    socket.on('listPlayer', function(list){
+        console.log(list);
+        listPlayer(list);
+    })
 
 
 
@@ -27,10 +36,15 @@ var ClientWebSocket = function () {
 
  	this.view = function(id){
  		socket.emit('view', id);
+
  	} 
 
     this.sendVote = function(id){
     	socket.emit('sendVote', id);
     }
+
+    this.listPlayer = function(){
+        socket.emit('listPlayer');
+    }        
 }
 

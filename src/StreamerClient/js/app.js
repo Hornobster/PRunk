@@ -17,7 +17,7 @@ window.onload= function(){
         document.getElementById('name').value = client.name;
         console.log(client.name);
         document.getElementById('setName').style.display = 'block'; 
-        client.createGame();
+        //client.createGame();
         window.currentPage = "setName";
     });
     
