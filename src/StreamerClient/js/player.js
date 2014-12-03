@@ -39,7 +39,8 @@ function PlayerClass(Q) {
                     offHand: null,
                     mount: null
                 },
-                buttonBindings: [null, null, null, null]
+                buttonBindings: [null, null, null, null],
+                blockIdx: 0
             });
 
             // add collision component for collision events
@@ -50,6 +51,7 @@ function PlayerClass(Q) {
 
             // bind event handlers
             this.on('bump.bottom', this, this.onLand);
+            this.on('endBlock', window.client, function() {console.log('endblock')});
         },
 
         step: function(dt) {
@@ -84,6 +86,13 @@ function PlayerClass(Q) {
             this.p.y += this.p.vy * dt;
 
             this.stage.collide(this);
+
+            if (this.p.inputComponent == 'keyboardInput') {
+                if (this.p.x > window.mapProperties.pollStart[this.p.blockIdx] * 70) {
+                    this.p.blockIdx++;
+                    this.trigger('endBlock');
+                }
+            }
         },
 
         onActionQ: function() {
