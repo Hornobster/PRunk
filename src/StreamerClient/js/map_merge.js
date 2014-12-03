@@ -85,16 +85,14 @@ function createMap(mapList, path ,load){
 
         resizeMap()
         block_properties["playerStart"]=max-(relativePoints[0]+collisPoints[0])-3;
-        block_properties["pollStart"]=[]
-        block_properties["pollStop"] =[]
+        block_properties["pollStart"]=[]        
 
 
         for (var z=0; z< collisPoints.length; z++){
             if (z%2==0){
-                block_properties["pollStart"].push({"x":partialW, "passedTrough":false})
+                block_properties["pollStart"].push(partialW)
             }else{
-                partialW+=widths[parseInt(z/2)]
-                block_properties["pollStop"].push({"x":partialW, "passedTrough":false})
+                partialW+=widths[parseInt(z/2)]                
             }
 
         }

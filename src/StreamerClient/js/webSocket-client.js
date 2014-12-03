@@ -192,4 +192,11 @@ var ClientWebSocket = function () {
     this.ready = function(){
         socket.emit('ready');
     }
+
+    this.startPoll = function(){
+        socket.emit('startPoll');
+    }
+    this.stopPoll = function(){
+        socket.emit('stopPoll');
+    }
 }
