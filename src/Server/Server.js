@@ -35,12 +35,13 @@ io.on('connection', function (socket) {
     
     //set palyer name
     socket.on('setName', function (name) {
-        console.log(name);
+        console.log(playersList);
         if(typeof name === 'string'){
             socket.name = name;
         }else{
             socket.emit('err','invalidName');
         }
+        console.log(playersList);
     });
 
     //create game
@@ -164,21 +165,34 @@ io.on('connection', function (socket) {
     
 // ######################### Viewer Event ###################################   
 
+    function getListPlayer(){
+        var list=[];      
+        var keysList = Object.keys(playersList);  
+        keysList.forEach(function(elem){
+            var obj = {};
+            obj['id'] = elem;
+            obj['name'] = playersList[elem].name;
+            list.push(obj);
+        });
+        return list;
+    }
+
     // connect the user to palyer if he is playing.
     socket.on('view', function (id) {
-        if (playersList[id]) {
+        if (playersList[id]) {            
             if (socket.room) {
                 socket.room.removePlayer(socket);
-            }
+            }        
             socket.spectatingView = id;
             socket.join("room_" + id);
+            socket.emit('view');
             if (playersList[id].poll) {
                 if (playersList[id].poll.pollStatus == 'voting') {
                     socket.emit('test', playersList[id].poll.choices);
                 }
             }
         }else{
-            socket.emit('err','the player does not exists');
+            socket.emit('listPlayer', getListPlayer());
         }
     });    
 
@@ -203,7 +217,11 @@ io.on('connection', function (socket) {
         }
     });
 
-    
+    socket.on('listPlayer', function(){        
+        socket.emit('listPlayer', getListPlayer());
+    });
+
+
     
     
     
@@ -247,6 +265,7 @@ io.on('connection', function (socket) {
         if (socket.room) {
             socket.room.removePlayer(socket);
             delete playersList[socket.id];
+            console.log(socket.id+" removed");
             io.to("room_"+socket.id).emit('test','player disconnected');
         }
     });
