@@ -43,7 +43,7 @@ function PlayerClass(Q) {
                 blockIdx: 0
             });
 
-            // add collision component for collision events
+            // add collision component for collision events 
             this.add('playerCollision');
 
             // add input component which will trigger input events
@@ -51,7 +51,9 @@ function PlayerClass(Q) {
 
             // bind event handlers
             this.on('bump.bottom', this, this.onLand);
-            this.on('endBlock', window.client, function() {console.log('endblock')});
+            this.on('endBlock', window.client, function() {
+                window.client.startPoll();
+            });
         },
 
         step: function(dt) {

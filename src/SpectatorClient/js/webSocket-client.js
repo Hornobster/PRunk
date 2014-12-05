@@ -12,7 +12,15 @@ var ClientWebSocket = function () {
     });
 
     socket.on('startPoll', function(list){
-
+        console.log('startPoll');
+        var keys = Object.keys(list);
+        html = "";
+        for(var i=0; i<keys.length; i++){
+            console.log(keys[i]);
+            console.log(list[keys[i]]);
+            html += '<figure class="objectFig" onClick="window.client.vote('+keys[i]+', this)"><img src="images/boots.png"/></figure>';
+        }
+        document.getElementById('objectListDiv').innerHTML = html;
     });
 
     socket.on('endPoll', function(){
@@ -26,7 +34,7 @@ var ClientWebSocket = function () {
     socket.on('listPlayer', function(list){
         console.log(list);
         listPlayer(list);
-    })
+    });
 
 
 
@@ -46,5 +54,18 @@ var ClientWebSocket = function () {
     this.listPlayer = function(){
         socket.emit('listPlayer');
     }        
+
+    this.vote = function(n, caller){
+
+        console.log('voted'+n);
+        elements = document.getElementsByClassName('objectFig');
+        for (var i = 0; i < elements.length; i++)
+        {
+            elements[i].style.background ='#2388db';               
+        }        
+        caller.style.background = '#f00';
+        socket.emit('vote',n);
+        console.log('voted',n)
+    }
 }
 

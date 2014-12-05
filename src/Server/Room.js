@@ -41,6 +41,7 @@ var Room = function(socket, server, roomsList, playersList, mapList){
 	
     
     this.load = function(number){
+    	console.log(number);
         if(this.gameStatus == 'waiting'){
             this.gameStatus = 'loading';
             if(!number){
@@ -58,8 +59,7 @@ var Room = function(socket, server, roomsList, playersList, mapList){
     
 	// start the game
 	this.start = function(){
-        if(this.gameStatus == 'loading'){
-            console.log('startGame');
+        if(this.gameStatus == 'loading'){            
             this.gameStatus = 'inGame';
             this.io.to(this.id).emit('start','gameStart');
         }else{

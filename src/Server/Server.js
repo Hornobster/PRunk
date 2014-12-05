@@ -60,31 +60,22 @@ io.on('connection', function (socket) {
     });
     
     //the player start a new poll
-    socket.on('startPoll', function (list) {
+    socket.on('startPoll', function () {
         console.log('startPoll');
-        // check if list is valido or not
-        var checkValidList = function(list){
-            var keys = Object.keys(list);
-            keys.forEach(function(elem){
-                if(typeof list[elem].name !== 'string'){
-                    return false;
-                }
-            });
-            return true;
-        }
-        
-        if(checkValidList(list)){
-            if (socket.room && socket.room.status == 'inGame') {
-                var id = 1;
-                if (socket.poll) {
-                    id = socket.poll.id + 1;
-                }
-                socket.poll = new Poll(id, list, io, "room_" + socket.id); // add "room_" to avoid that every message sent in that room will be sent also to the player with that ID
-            }else{
-                socket.emit('err','you can\'t start poll now')
+        // check if list is valido or not        
+        if (socket.room && socket.room.gameStatus == 'inGame') {
+            var id = 1;
+            if (socket.poll) {
+                socket.emit('pollResult', socket.poll.getResult());
+                id = socket.poll.pollId + 1;
             }
+            // add "room_" to avoid that every message sent in that room will be sent also to the player with that ID
+            choices = { 5: {name: 'test', count:0},
+                        1: {name: 'object', count:0},
+                        }
+            socket.poll = new Poll(id, choices, io, "room_" + socket.id); 
         }else{
-            socket.emit('err','invalid list');
+            socket.emit('err','you can\'t start poll now')
         }
     });
 
@@ -130,8 +121,7 @@ io.on('connection', function (socket) {
         }
     });
     
-    socket.on('playerAction', function(obj){
-        console.log(obj);
+    socket.on('playerAction', function(obj){        
         if(socket.room){
             obj.playerId = socket.id;
             socket.room.broadcast(obj);
@@ -188,7 +178,7 @@ io.on('connection', function (socket) {
             socket.emit('view');
             if (playersList[id].poll) {
                 if (playersList[id].poll.pollStatus == 'voting') {
-                    socket.emit('test', playersList[id].poll.choices);
+                    socket.emit('startPoll', playersList[id].poll.choices);
                 }
             }
         }else{
@@ -197,22 +187,26 @@ io.on('connection', function (socket) {
     });    
 
     // user send vote
-    socket.on('sendVote', function (id) {
+    socket.on('vote', function (id) {
         // check that the client is spactating someone.    
         if (socket.spectatingView) {            
             var p = playersList[socket.spectatingView];            
             // check if there is a valid poll
-            if (p && p.poll && p.poll.pollStatus == 'voting') {                
+            if (p && p.poll && p.poll.pollStatus == 'voting') {                           
                 // if the viewer has already voted that poll change his vote otherwise send a normal vote.
                 if (socket.vote && socket.vote.pollId == p.poll.id) {
+                    console.log('changeVote '+socket.vote.vote+" -> "+id);
                     p.poll.changeVote(id, socket.vote.vote);
+                    socket.vote.vote = id;
                 } else {
+                    console.log('newVote', id);
                     socket.vote = {
                         vote: id,
                         pollId: p.poll.id
                     };
                     p.poll.vote(id);
                 }
+                console.log(p.poll.choices);
             }
         }
     });

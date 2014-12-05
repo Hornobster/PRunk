@@ -131,9 +131,13 @@ var ClientWebSocket = function () {
         setListPlayers(list);
     });
     
+    socket.on('pollResult', function(res){
+        console.log(res);
+    });
+
     socket.on('disconnect', function () {
 
-    });
+    });    
 
 
     //-------------- client function ------------------------          

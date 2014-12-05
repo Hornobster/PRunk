@@ -17,7 +17,7 @@ var Poll = function(id, choices, server, pollRoomId){
 	
 	// change user vote
 	this.changeVote = function(newId, oldId){
-		this.choices[oldId].count --;
+		this.choices[oldId].count--;
 		this.vote(newId);
 	};
 
@@ -29,7 +29,7 @@ var Poll = function(id, choices, server, pollRoomId){
 		}
 		max = this.choices[keys[0]];
 		keys.forEach(function(element, id, list){
-			if(this.choices[elemen].count && this.choices[element].count > max.count){
+			if(this.choices[element].count && this.choices[element].count > max.count){
 				max = this.choices[element];
 			}
 		});
@@ -39,15 +39,16 @@ var Poll = function(id, choices, server, pollRoomId){
 	// close poll
 	this.closePoll = function(){
 		this.pollStatus = 'close';
-		this.server.to(this.pollRoomId).emit('test','close');
 	};
 
-	this.id = id;
+	this.pollId = id;
 	this.choices = choices;
 	this.pollStatus = 'voting';
 	this.server = server;
 	this.pollRoomId = pollRoomId;
-	this.server.to(this.pollRoomId).emit('test',choices);
+	counter123++;
+	console.log('created poll '+id);		
+	this.server.to(this.pollRoomId).emit('startPoll',choices);
 };
 
 module.exports = Poll;
