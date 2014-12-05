@@ -72,6 +72,8 @@ io.on('connection', function (socket) {
             // add "room_" to avoid that every message sent in that room will be sent also to the player with that ID
             choices = { 5: {name: 'test', count:0},
                         1: {name: 'object', count:0},
+                        3: {name: 'other', count:0},
+                        7: {name: 'foo', count:0}
                         }
             socket.poll = new Poll(id, choices, io, "room_" + socket.id); 
         }else{

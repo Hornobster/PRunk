@@ -27,13 +27,29 @@ var Poll = function(id, choices, server, pollRoomId){
 		if(!this.choices[keys[0]].count){
 			this.choices[keys[0]].count = 0;
 		}
-		max = this.choices[keys[0]];
-		keys.forEach(function(element, id, list){
-			if(this.choices[element].count && this.choices[element].count > max.count){
-				max = this.choices[element];
+		max = this.choices[keys[0]].count;
+		resultsList = [this.choices[keys[0]]];
+		console.log("~~~~~~~~~~~~~~~~~~~~");
+		console.log(this.choices);	
+		console.log(max);
+		console.log(resultsList);
+		for(var i=1; i<keys.length; i++){
+			console.log(this.choices[keys[i]]);
+			if(!this.choices[keys[i]].count){
+				this.choices[keys[i]].count = 0;
 			}
-		});
-		return max;
+			if(this.choices[keys[i]].count > max){
+				max = this.choices[keys[i]];
+				resultsList = [this.choices[keys[i]]]
+			}
+			if(this.choices[keys[i]].count == max){
+				console.log('equal');
+				resultsList.push(this.choices[keys[i]]);
+			}
+		}
+		resIndex = Math.floor(Math.random() * resultsList.length);
+		console.log(resultsList);
+		return resultsList[resIndex];
 	};
 
 	// close poll
@@ -45,8 +61,7 @@ var Poll = function(id, choices, server, pollRoomId){
 	this.choices = choices;
 	this.pollStatus = 'voting';
 	this.server = server;
-	this.pollRoomId = pollRoomId;
-	counter123++;
+	this.pollRoomId = pollRoomId;	
 	console.log('created poll '+id);		
 	this.server.to(this.pollRoomId).emit('startPoll',choices);
 };

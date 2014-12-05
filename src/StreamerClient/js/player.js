@@ -27,7 +27,7 @@ function PlayerClass(Q) {
                 direction: 'right',
                 vx: 0,
                 vy: 0,
-                speed: 200,
+                speed: 800,
                 isJumping: false,
                 inputComponent: 'keyboardInput',
                 equip: {
