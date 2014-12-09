@@ -32,7 +32,7 @@ var ClientWebSocket = function () {
         setupGame(obj.maps);        
         var c = this;
         createMap(obj.maps,"http://suff.me/PRunk/map/",function(s){
-            window.Q.load(['tiles_map.png', 'player.png', 'ghost.png'], function(){
+            window.Q.load(['tiles_map.png', 'player.png', 'ghost.png', 'gunButton.png', 'bootsButton.png'], function(){
                 window.Q.load({'map.tmx':s},function(){
                     window.Q.sheet('tiles','tiles_map.png',{tilew: 70, tileh: 70});
 
@@ -70,7 +70,7 @@ var ClientWebSocket = function () {
                                     collisionMask: ~Q.SPRITE_ACTIVE
                                 })));
                             } else {
-                                var currentPlayer = stage.insert(new Q.Player({
+                                window.localPlayer = stage.insert(new Q.Player({
                                     x: 300,
                                     y: window.mapProperties.playerStart*70,
                                     z: 10000,
@@ -78,12 +78,14 @@ var ClientWebSocket = function () {
                                     name: obj.players[ids[i]],
                                     inputComponent: 'keyboardInput'
                                 }));
-                                window.players.push(currentPlayer);
+                                window.players.push(window.localPlayer);
 
-                                stage.add("viewport").follow(currentPlayer);
+                                stage.add("viewport").follow(window.localPlayer);
                             }
                         }
                     });
+
+                    CreateUIStage(window.Q);
 
                     window.client.ready();
                 })
