@@ -35,6 +35,7 @@ function EquipItemComponent(Q, desc) {
                     this.entity.del(this.entity.p.equip[desc.slot]);
                 }
                 this.entity.p.equip[desc.slot] = desc.name;
+                this.entity.trigger('objEquipped');
 
                 if (desc.added) {
                     desc.added(this);
@@ -60,6 +61,7 @@ function EquipItemComponent(Q, desc) {
             // when the component is deleted, set the equip slot and the button binding to null
             destroyed: function () {
                 this.entity.p.equip[desc.slot] = null;
+                this.entity.trigger('objEquipped');
 
                 if (this.boundSlot !== undefined) {
                     this.entity.p.buttonBindings[this.boundSlot] = null;
