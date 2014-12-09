@@ -72,9 +72,6 @@ function createMap(mapList, path ,load){
 
         setXMLProperties();
 
-
-
-
         stringXML=(new XMLSerializer()).serializeToString(newDoc);
         callback(stringXML)
 
