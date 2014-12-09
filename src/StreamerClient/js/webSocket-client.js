@@ -1,5 +1,5 @@
 var ClientWebSocket = function () {
-    var socket = io('ws://10.62.161.181:3000');
+    var socket = io('ws://localhost:3000');
     var entityEventMap = {};
     this.id = null;
     this.name = null;
@@ -32,7 +32,7 @@ var ClientWebSocket = function () {
         setupGame(obj.maps);        
         var c = this;
         createMap(obj.maps,"http://suff.me/PRunk/map/",function(s){
-            window.Q.load(['tiles_map.png', 'player.png', 'ghost.png', 'gunButton.png', 'bootsButton.png'], function(){
+            window.Q.load(['tiles_map.png', 'player.png', 'ghost.png', 'gunButton.png', 'bootsButton.png', 'jetpackButton.png', 'jumpButton.png', 'springHeadButton.png', 'springBootsButton.png','springChestButton.png'], function(){
                 window.Q.load({'map.tmx':s},function(){
                     window.Q.sheet('tiles','tiles_map.png',{tilew: 70, tileh: 70});
 
@@ -133,8 +133,12 @@ var ClientWebSocket = function () {
         setListPlayers(list);
     });
     
-    socket.on('pollResult', function(res){
-        console.log(res);
+    socket.on('pollResult', function(obj){
+        if (obj.player != this.id) {
+            entityEventMap[obj.player].entity.add(obj.name);
+        }else{
+            window.localPlayer.add(obj.name);
+        }
     });
 
     socket.on('disconnect', function () {

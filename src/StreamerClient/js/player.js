@@ -29,6 +29,7 @@ function PlayerClass(Q) {
                 vy: 0,
                 speed: 800,
                 isJumping: false,
+                jumpMultiplier: 1,
                 inputComponent: 'keyboardInput',
                 equip: {
                     head: null,
@@ -69,15 +70,37 @@ function PlayerClass(Q) {
                     this.p.flip = 'x';
                 }
                 this.p.direction = 'left';
-                this.p.vx = this.p.isJumping ? -this.p.speed / 2 : -this.p.speed;
+                this.p.vx += (this.p.isJumping ? -this.p.speed / 2 : -this.p.speed) * dt;
             } else if (this.getInput('rightKey')) {
                 if (this.p.direction == 'left') {
                     this.p.flip = false;
                 }
                 this.p.direction = 'right';
-                this.p.vx = this.p.isJumping ? this.p.speed / 2 : this.p.speed;
-            } else {
-                this.p.vx = 0;
+                this.p.vx += (this.p.isJumping ? this.p.speed / 2 : this.p.speed) * dt;
+            } else {      
+                if(this.p.vx > 0){
+                    if(this.p.vx > this.p.speed * dt){
+                        this.p.vx += -(this.p.speed *dt)*2;    
+                    }else{
+                        this.p.vx = 0;
+                    }
+                    
+                }    
+                if(this.p.vx < 0){
+                    if(this.p.vx < -this.p.speed * dt){
+                        this.p.vx += (this.p.speed *dt)*2;    
+                    }else{
+                        this.p.vx = 0;
+                    }
+                }               
+                
+            }
+
+            if(this.p.vx > this.speed){
+                this.p.vx = this.speed;
+            }
+            if(this.p.vx < -this.speed){
+                this.p.vx = -this.speed;
             }
 
             // fake gravity
@@ -133,7 +156,7 @@ function PlayerClass(Q) {
         onActionJump: function() {
             if (!this.p.isJumping) {
                 this.p.isJumping = true;
-                this.p.vy = -500;
+                this.p.vy = -500*this.p.jumpMultiplier;
             }
         },
 
