@@ -3,6 +3,7 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var Room = require('./Room');
 var Poll = require('./Poll.js');
+var objects = require('./objects.js');
 var roomsList = {};
 var playersList = {};
 var maps = ['a.tmx','b.tmx','c.tmx','d.tmx','e.tmx','f.tmx','g.tmx'];
@@ -59,6 +60,24 @@ io.on('connection', function (socket) {
         }
     });
     
+    function getChoices(n){
+        var suppObject = JSON.parse(JSON.stringify(objects));
+        var choices = [];
+        for(var i=0; i<n; i++){
+            var index = Math.floor(Math.random() * suppObject.length);
+            choices.push(suppObject[index]);
+            console.log(suppObject[index]);
+            suppObject.splice(index, 1);
+            console.log(suppObject.length);
+        }
+        var objChoices = {};
+        choices.forEach(function(elem, index){
+            objChoices[index] = elem;
+        })        
+        return objChoices;
+
+    }
+
     //the player start a new poll
     socket.on('startPoll', function () {
         console.log('startPoll');
@@ -72,13 +91,7 @@ io.on('connection', function (socket) {
                 id = socket.poll.pollId + 1;
             }
             // add "room_" to avoid that every message sent in that room will be sent also to the player with that ID
-            choices = { 0: {name: 'gun', count:0},
-                        1: {name: 'boots', count:0},
-                        2: {name: 'jatpack', count:0},
-                        3: {name: 'springBoots', count:0},
-                        4: {name: 'springHead', count:0},
-                        5: {name: 'springChest', count:0},                        
-                        }
+            choices = getChoices(5);
             socket.poll = new Poll(id, choices, io, "room_" + socket.id); 
         }else{
             socket.emit('err','you can\'t start poll now')

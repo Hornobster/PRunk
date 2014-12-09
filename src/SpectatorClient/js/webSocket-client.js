@@ -1,5 +1,5 @@
 var ClientWebSocket = function () {
-	var socket = io('ws://10.62.161.181:3000');
+	var socket = io('ws://localhost:3000');
 	
 	//------------------- Client Event ---------------------
 
@@ -18,7 +18,8 @@ var ClientWebSocket = function () {
         for(var i=0; i<keys.length; i++){
             console.log(keys[i]);
             console.log(list[keys[i]]);
-            html += '<figure class="objectFig" onClick="window.client.vote('+keys[i]+', this)"><img src="images/boots.png"/></figure>';
+            var image = list[keys[i]].name+'Button.png';
+            html += '<figure class="objectFig" onClick="window.client.vote('+keys[i]+', this)" style="background-image: url(\'http://suff.me/PRunk/images/'+image+'\')"></figure>';
         }
         document.getElementById('objectListDiv').innerHTML = html;
     });
@@ -61,9 +62,9 @@ var ClientWebSocket = function () {
         elements = document.getElementsByClassName('objectFig');
         for (var i = 0; i < elements.length; i++)
         {
-            elements[i].style.background ='#2388db';               
+            elements[i].style.boxShadow ='0 0 0 #888888';               
         }        
-        caller.style.background = '#f00';
+        caller.style.boxShadow = '0 0 20px 5px #2388db';
         socket.emit('vote',n);
         console.log('voted',n)
     }

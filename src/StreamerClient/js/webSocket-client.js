@@ -24,6 +24,11 @@ var ClientWebSocket = function () {
     socket.on('gameId', function (id) {
         //document.getElementById('gameId').innerHTML = id;
     })
+    
+    var objectsImages = [];
+    window.objects.forEach(function(elem){
+        objectsImages.push(elem.name+"Button.png");
+    })   
 
     // load the game setup
     socket.on('load', function (obj) {
@@ -31,63 +36,66 @@ var ClientWebSocket = function () {
         window.players = [];
         setupGame(obj.maps);        
         var c = this;
-        createMap(obj.maps,"http://suff.me/PRunk/map/",function(s){
-            window.Q.load(['tiles_map.png', 'player.png', 'ghost.png', 'gunButton.png', 'bootsButton.png', 'jetpackButton.png', 'jumpButton.png', 'springHeadButton.png', 'springBootsButton.png','springChestButton.png'], function(){
-                window.Q.load({'map.tmx':s},function(){
-                    window.Q.sheet('tiles','tiles_map.png',{tilew: 70, tileh: 70});
+        createMap(['f.tmx'],"http://suff.me/PRunk/map/",function(s){
+            window.Q.load(['tiles_map.png', 'player.png', 'ghost.png'], function(){
+                window.Q.load(objectsImages, function(){
+                    window.Q.load({'map.tmx':s},function(){
+                        window.Q.sheet('tiles','tiles_map.png',{tilew: 70, tileh: 70});
+                        window.Q.compileSheets("object.png");
 
-                    Q.scene("map", function (stage) {
-                        var background = new Q.TileLayer({
-                            dataAsset: 'map.tmx',
-                            layerIndex: 0,
-                            sheet: 'tiles',
-                            tileW: 70,
-                            tileH: 70,
-                            type: Q.SPRITE_NONE
-                        });
-                        stage.insert(background);
-                        stage.collisionLayer(new Q.TileLayer({
-                            dataAsset: 'map.tmx',
-                            layerIndex: 1,
-                            sheet: 'tiles',
-                            tileW: 70,
-                            tileH: 70
-                        }));
+                        Q.scene("map", function (stage) {
+                            var background = new Q.TileLayer({
+                                dataAsset: 'map.tmx',
+                                layerIndex: 0,
+                                sheet: 'tiles',
+                                tileW: 70,
+                                tileH: 70,
+                                type: Q.SPRITE_NONE
+                            });
+                            stage.insert(background);
+                            stage.collisionLayer(new Q.TileLayer({
+                                dataAsset: 'map.tmx',
+                                layerIndex: 1,
+                                sheet: 'tiles',
+                                tileW: 70,
+                                tileH: 70
+                            }));
 
 
-                        var ids = Object.keys(obj.players);
-                        for (var i = 0; i < ids.length; i++) {
-                            if (ids[i] != c.id) {
-                                window.players.push(stage.insert(new Q.Player({
-                                    x: 300,
-                                    y: window.mapProperties.playerStart*70,
-                                    z: 1000,
-                                    id: ids[i],
-                                    name: obj.players[ids[i]],
-                                    inputComponent: 'networkInput',
-                                    asset: 'ghost.png',
-                                    type: Q.SPRITE_NONE,
-                                    collisionMask: ~Q.SPRITE_ACTIVE
-                                })));
-                            } else {
-                                window.localPlayer = stage.insert(new Q.Player({
-                                    x: 300,
-                                    y: window.mapProperties.playerStart*70,
-                                    z: 10000,
-                                    id: ids[i],
-                                    name: obj.players[ids[i]],
-                                    inputComponent: 'keyboardInput'
-                                }));
-                                window.players.push(window.localPlayer);
+                            var ids = Object.keys(obj.players);
+                            for (var i = 0; i < ids.length; i++) {
+                                if (ids[i] != c.id) {
+                                    window.players.push(stage.insert(new Q.Player({
+                                        x: 300,
+                                        y: window.mapProperties.playerStart*70,
+                                        z: 1000,
+                                        id: ids[i],
+                                        name: obj.players[ids[i]],
+                                        inputComponent: 'networkInput',
+                                        asset: 'ghost.png',
+                                        type: Q.SPRITE_NONE,
+                                        collisionMask: ~Q.SPRITE_ACTIVE
+                                    })));
+                                } else {
+                                    window.localPlayer = stage.insert(new Q.Player({
+                                        x: 300,
+                                        y: window.mapProperties.playerStart*70,
+                                        z: 10000,
+                                        id: ids[i],
+                                        name: obj.players[ids[i]],
+                                        inputComponent: 'keyboardInput'
+                                    }));
+                                    window.players.push(window.localPlayer);
 
-                                stage.add("viewport").follow(window.localPlayer);
+                                    stage.add("viewport").follow(window.localPlayer);
+                                }
                             }
-                        }
-                    });
+                        });
 
-                    CreateUIStage(window.Q);
+                        CreateUIStage(window.Q);
 
-                    window.client.ready();
+                        window.client.ready();
+                    })
                 })
             });
         })
