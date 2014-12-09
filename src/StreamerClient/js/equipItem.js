@@ -20,6 +20,9 @@
             } else {
                 this.entity.del('gun');
             }
+        },
+        destroyed: function(component) {
+            console.log('Gun dropped');
         }
     });
  *
@@ -60,6 +63,11 @@ function EquipItemComponent(Q, desc) {
 
             // when the component is deleted, set the equip slot and the button binding to null
             destroyed: function () {
+                // call item destructor, if specified
+                if (desc.destroyed) {
+                    desc.destroyed(this);
+                }
+
                 this.entity.p.equip[desc.slot] = null;
                 this.entity.trigger('objEquipped');
 

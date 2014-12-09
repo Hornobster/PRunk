@@ -28,6 +28,7 @@ function PlayerClass(Q) {
                 vx: 0,
                 vy: 0,
                 speed: 800,
+                speedMultiplier: 1,
                 isJumping: false,
                 jumpMultiplier: 1,
                 inputComponent: 'keyboardInput',
@@ -70,25 +71,25 @@ function PlayerClass(Q) {
                     this.p.flip = 'x';
                 }
                 this.p.direction = 'left';
-                this.p.vx += (this.p.isJumping ? -this.p.speed / 2 : -this.p.speed) * dt;
+                this.p.vx += (this.p.isJumping ? -this.p.speed / 2 : -this.p.speed) * dt * this.p.speedMultiplier;
             } else if (this.getInput('rightKey')) {
                 if (this.p.direction == 'left') {
                     this.p.flip = false;
                 }
                 this.p.direction = 'right';
-                this.p.vx += (this.p.isJumping ? this.p.speed / 2 : this.p.speed) * dt;
+                this.p.vx += (this.p.isJumping ? this.p.speed / 2 : this.p.speed) * dt * this.p.speedMultiplier;
             } else {      
                 if(this.p.vx > 0){
-                    if(this.p.vx > this.p.speed * dt){
-                        this.p.vx += -(this.p.speed *dt)*2;    
+                    if(this.p.vx > this.p.speed * dt * this.p.speedMultiplier){
+                        this.p.vx += -(this.p.speed * dt * this.p.speedMultiplier)*2;
                     }else{
                         this.p.vx = 0;
                     }
                     
                 }    
                 if(this.p.vx < 0){
-                    if(this.p.vx < -this.p.speed * dt){
-                        this.p.vx += (this.p.speed *dt)*2;    
+                    if(this.p.vx < -this.p.speed * dt * this.p.speedMultiplier){
+                        this.p.vx += (this.p.speed * dt * this.p.speedMultiplier)*2;
                     }else{
                         this.p.vx = 0;
                     }
@@ -96,11 +97,11 @@ function PlayerClass(Q) {
                 
             }
 
-            if(this.p.vx > this.speed){
-                this.p.vx = this.speed;
+            if(this.p.vx > this.speed * this.p.speedMultiplier){
+                this.p.vx = this.speed * this.p.speedMultiplier;
             }
-            if(this.p.vx < -this.speed){
-                this.p.vx = -this.speed;
+            if(this.p.vx < -this.speed * this.p.speedMultiplier){
+                this.p.vx = -this.speed * this.p.speedMultiplier;
             }
 
             // fake gravity
