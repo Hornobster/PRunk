@@ -5,7 +5,7 @@ var Room = require('./Room');
 var Poll = require('./Poll.js');
 var roomsList = {};
 var playersList = {};
-var maps = ['a.tmx','b.tmx','c.tmx','d.tmx'];
+var maps = ['a.tmx','b.tmx','c.tmx','d.tmx','e.tmx','f.tmx','g.tmx'];
 
 app.get('/', function (req, res) {
     res.sendfile(__dirname + '/index.html');
@@ -66,7 +66,9 @@ io.on('connection', function (socket) {
         if (socket.room && socket.room.gameStatus == 'inGame') {
             var id = 1;
             if (socket.poll) {
-                socket.emit('pollResult', socket.poll.getResult());
+                var obj = socket.poll.getResult();
+                obj['player'] = socket.id;
+                socket.room.pollResult(obj);
                 id = socket.poll.pollId + 1;
             }
             // add "room_" to avoid that every message sent in that room will be sent also to the player with that ID

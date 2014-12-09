@@ -1,5 +1,5 @@
 var ClientWebSocket = function () {
-	var socket = io('ws://localhost:3000');
+	var socket = io('ws://10.62.161.181:3000');
 	
 	//------------------- Client Event ---------------------
 

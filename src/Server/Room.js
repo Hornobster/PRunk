@@ -73,6 +73,10 @@ var Room = function(socket, server, roomsList, playersList, mapList){
         }
     }
     
+    this.pollResult = function(obj){    	
+    	this.io.to(this.id).emit('pollResult',obj);
+    }
+
     this.ready = function(socket){
         if(this.gameStatus == 'loading'){
             if(!socket.ready){
