@@ -9,7 +9,6 @@
  *
  * EquipItemComponent(Q, {
         name: 'gun',
-        sprite: 'gun.png',
         slot: 'hand',
         added: function(component) {
             component.ammo = 10;
@@ -50,7 +49,8 @@ function EquipItemComponent(Q, desc) {
                         if (this.entity.p.buttonBindings[i] === null) {
                             this.entity.p.buttonBindings[i] = desc.name;
                             this.boundSlot = i;
-                            console.log(this);
+
+                            this.entity.trigger('objBound');
                             break;
                         }
                     }
@@ -63,6 +63,7 @@ function EquipItemComponent(Q, desc) {
 
                 if (this.boundSlot !== undefined) {
                     this.entity.p.buttonBindings[this.boundSlot] = null;
+                    this.entity.trigger('objBound');
                 }
             }
         });

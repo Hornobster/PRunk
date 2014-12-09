@@ -87,6 +87,7 @@ function PlayerClass(Q) {
             this.p.x += this.p.vx * dt;
             this.p.y += this.p.vy * dt;
 
+            // check collision
             this.stage.collide(this);
 
             if (this.p.inputComponent == 'keyboardInput') {

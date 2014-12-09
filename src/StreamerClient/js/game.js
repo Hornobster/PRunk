@@ -15,7 +15,7 @@
 function setupGame(mapList) {
        
     var Q = window.Q = Quintus({development: true, imagePath: "http://suff.me/PRunk/images/"}) // remove development option to enable asset caching
-        .include('Sprites, Input, Scenes, 2D')
+        .include('Sprites, Input, Scenes, 2D, UI')
         .setup("quintusCanvas")
         
     // bind keycodes to Quintus events
@@ -30,6 +30,33 @@ function setupGame(mapList) {
         82: "rKey"
     });
 
+    /*
+    EquipItemComponent(Q, {
+        name: 'gun',
+        slot: 'hand',
+        added: function(component) {
+            component.ammo = 10;
+        },
+        activate: function() {
+            if (this.ammo > 0) {
+                this.ammo -= 1;
+                console.log('pew pew');
+            } else {
+                this.entity.del('gun');
+            }
+        }
+    });
+
+    EquipItemComponent(Q, {
+        name: 'boots',
+        slot: 'feet',
+        activate: function() {
+            console.log('supa fast');
+            this.entity.p.speed *= 2;
+        }
+    });
+    */
+
     PlayerCollisionComponent(Q);
     KeyboardInputComponent(Q);
     NetworkInputComponent(Q, window.client);
@@ -38,14 +65,6 @@ function setupGame(mapList) {
 }
 
 function startGame() {
-    var Q = window.Q;
     window.Q.stageScene('map', {sort: true});
-
-    // Q.gameLoop(function (dt) {
-    //     Q.clear();
-    //     window.players.forEach(function (p) {
-    //         p.update(dt);
-    //         p.render(Q.ctx);
-    //     });
-    // });
+    window.Q.stageScene('UIScene', 1);
 }
