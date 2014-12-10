@@ -65,7 +65,7 @@ var ClientWebSocket = function () {
                             var ids = Object.keys(obj.players);
                             for (var i = 0; i < ids.length; i++) {
                                 if (ids[i] != c.id) {
-                                    window.players.push(stage.insert(new Q.Player({
+                                    var tmpPlayer = stage.insert(new Q.Player({
                                         x: 300,
                                         y: window.mapProperties.playerStart*70,
                                         z: 1000,
@@ -75,7 +75,17 @@ var ClientWebSocket = function () {
                                         asset: 'ghost.png',
                                         type: Q.SPRITE_NONE,
                                         collisionMask: ~Q.SPRITE_ACTIVE
-                                    })));
+                                    }));
+
+                                    // add name over players
+                                    stage.insert(new Q.UI.Text({
+                                        label: tmpPlayer.p.name,
+                                        color: "black",
+                                        size: 16,
+                                        y: -50
+                                    }), tmpPlayer);
+
+                                    window.players.push(tmpPlayer);
                                 } else {
                                     window.localPlayer = stage.insert(new Q.Player({
                                         x: 300,
@@ -85,6 +95,20 @@ var ClientWebSocket = function () {
                                         name: obj.players[ids[i]],
                                         inputComponent: 'keyboardInput'
                                     }));
+
+                                    var textBack = stage.insert(new Q.UI.Container({
+                                        fill: "#2388db",
+                                        y: -50
+                                    }), window.localPlayer);
+
+                                    stage.insert(new Q.UI.Text({
+                                        label: window.localPlayer.p.name,
+                                        color: "white",
+                                        size: 16
+                                    }), textBack);
+
+                                    textBack.fit(1, 2);
+
                                     window.players.push(window.localPlayer);
 
                                     stage.add("viewport").follow(window.localPlayer);
