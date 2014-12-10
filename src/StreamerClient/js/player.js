@@ -59,60 +59,65 @@ function PlayerClass(Q) {
         },
 
         step: function(dt) {
-            // update horizontal speed and sprite according to input
-            if (this.getInput('leftKey') && this.getInput('rightKey')) {
-                if (this.p.direction == 'left') {
-                    this.p.flip = false;
-                }
-                this.p.direction = 'right';
-                this.p.vx = 0;
-            } else if (this.getInput('leftKey')) {
-                if (this.p.direction == 'right') {
-                    this.p.flip = 'x';
-                }
-                this.p.direction = 'left';
-                this.p.vx += (this.p.isJumping ? -this.p.speed / 2 : -this.p.speed) * dt * this.p.speedMultiplier;
-            } else if (this.getInput('rightKey')) {
-                if (this.p.direction == 'left') {
-                    this.p.flip = false;
-                }
-                this.p.direction = 'right';
-                this.p.vx += (this.p.isJumping ? this.p.speed / 2 : this.p.speed) * dt * this.p.speedMultiplier;
-            } else {      
-                if(this.p.vx > 0){
-                    if(this.p.vx > this.p.speed * dt * this.p.speedMultiplier){
-                        this.p.vx += -(this.p.speed * dt * this.p.speedMultiplier)*2;
-                    }else{
-                        this.p.vx = 0;
+            var stepDT = dt;
+            while (stepDT > 0) {
+                dt = Math.min(1/30, stepDT);
+
+                // update horizontal speed and sprite according to input
+                if (this.getInput('leftKey') && this.getInput('rightKey')) {
+                    if (this.p.direction == 'left') {
+                        this.p.flip = false;
                     }
-                    
-                }    
-                if(this.p.vx < 0){
-                    if(this.p.vx < -this.p.speed * dt * this.p.speedMultiplier){
-                        this.p.vx += (this.p.speed * dt * this.p.speedMultiplier)*2;
-                    }else{
-                        this.p.vx = 0;
+                    this.p.direction = 'right';
+                    this.p.vx = 0;
+                } else if (this.getInput('leftKey')) {
+                    if (this.p.direction == 'right') {
+                        this.p.flip = 'x';
                     }
-                }               
-                
+                    this.p.direction = 'left';
+                    this.p.vx += (this.p.isJumping ? -this.p.speed / 2 : -this.p.speed) * dt * this.p.speedMultiplier;
+                } else if (this.getInput('rightKey')) {
+                    if (this.p.direction == 'left') {
+                        this.p.flip = false;
+                    }
+                    this.p.direction = 'right';
+                    this.p.vx += (this.p.isJumping ? this.p.speed / 2 : this.p.speed) * dt * this.p.speedMultiplier;
+                } else {
+                    if (this.p.vx > 0) {
+                        if (this.p.vx > this.p.speed * dt * this.p.speedMultiplier) {
+                            this.p.vx += -(this.p.speed * dt * this.p.speedMultiplier) * 2;
+                        } else {
+                            this.p.vx = 0;
+                        }
+                    } else if (this.p.vx < 0) {
+                        if (this.p.vx < -this.p.speed * dt * this.p.speedMultiplier) {
+                            this.p.vx += (this.p.speed * dt * this.p.speedMultiplier) * 2;
+                        } else {
+                            this.p.vx = 0;
+                        }
+                    }
+
+                }
+
+                if (this.p.vx > this.speed * this.p.speedMultiplier) {
+                    this.p.vx = this.speed * this.p.speedMultiplier;
+                }
+                if (this.p.vx < -this.speed * this.p.speedMultiplier) {
+                    this.p.vx = -this.speed * this.p.speedMultiplier;
+                }
+
+                // fake gravity
+                this.p.vy += 800 * dt;
+
+                // update position
+                this.p.x += this.p.vx * dt;
+                this.p.y += this.p.vy * dt;
+
+                // check collision
+                this.stage.collide(this);
+
+                stepDT -= dt;
             }
-
-            if(this.p.vx > this.speed * this.p.speedMultiplier){
-                this.p.vx = this.speed * this.p.speedMultiplier;
-            }
-            if(this.p.vx < -this.speed * this.p.speedMultiplier){
-                this.p.vx = -this.speed * this.p.speedMultiplier;
-            }
-
-            // fake gravity
-            this.p.vy += 800 * dt;
-
-            // update position
-            this.p.x += this.p.vx * dt;
-            this.p.y += this.p.vy * dt;
-
-            // check collision
-            this.stage.collide(this);
 
             if (this.p.inputComponent == 'keyboardInput') {
                 if (this.p.x > window.mapProperties.pollStart[this.p.blockIdx] * 70) {
