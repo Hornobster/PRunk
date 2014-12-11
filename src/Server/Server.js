@@ -6,7 +6,7 @@ var Poll = require('./Poll.js');
 var objects = require('./objects.js');
 var roomsList = {};
 var playersList = {};
-var maps = ['a.tmx','b.tmx','c.tmx','d.tmx','e.tmx','f.tmx','g.tmx'];
+var maps = ['a.tmx','b.tmx','c.tmx','d.tmx','e.tmx','g.tmx'];
 
 app.get('/', function (req, res) {
     res.sendfile(__dirname + '/index.html');
@@ -35,14 +35,13 @@ io.on('connection', function (socket) {
 // ############################ Player Event ###############################
     
     //set palyer name
-    socket.on('setName', function (name) {
-        console.log(playersList);
+    socket.on('setName', function (name) {  
+        console.log('senName -> '+name);  
         if(typeof name === 'string'){
             socket.name = name;
         }else{
             socket.emit('err','invalidName');
         }
-        console.log(playersList);
     });
 
     //create game
@@ -54,21 +53,20 @@ io.on('connection', function (socket) {
 
     //jsoin game
     socket.on('joinGame', function (id) {
-        console.log('joinGame'+id);
+        console.log('joinGame ->'+id);
         if (roomsList[id]) {
             roomsList[id].addPlayer(socket);
         }
     });
     
     function getChoices(n){
+        console.log('getChoices');
         var suppObject = JSON.parse(JSON.stringify(objects));
         var choices = [];
         for(var i=0; i<n; i++){
             var index = Math.floor(Math.random() * suppObject.length);
-            choices.push(suppObject[index]);
-            console.log(suppObject[index]);
-            suppObject.splice(index, 1);
-            console.log(suppObject.length);
+            choices.push(suppObject[index]);            
+            suppObject.splice(index, 1);            
         }
         var objChoices = {};
         choices.forEach(function(elem, index){
@@ -108,7 +106,8 @@ io.on('connection', function (socket) {
     });
 
     // send the poll result to the user
-    socket.on('pollResult', function () {        
+    socket.on('pollResult', function () {
+        console.log('pollResult');        
         if (socket.poll) {
             socket.emit('test', socket.poll.getResult);
         }
@@ -140,7 +139,7 @@ io.on('connection', function (socket) {
         }
     });
     
-    socket.on('playerAction', function(obj){        
+    socket.on('playerAction', function(obj){                
         if(socket.room){
             obj.playerId = socket.id;
             socket.room.broadcast(obj);
@@ -150,6 +149,7 @@ io.on('connection', function (socket) {
     });
     
     socket.on('ready', function(){
+        console.log('ready');
         if(socket.room){
             socket.room.ready(socket);
         }
@@ -188,6 +188,7 @@ io.on('connection', function (socket) {
 
     // connect the user to palyer if he is playing.
     socket.on('view', function (id) {
+        console.log('view');
         if (playersList[id]) {            
             if (socket.room) {
                 socket.room.removePlayer(socket);
@@ -207,30 +208,29 @@ io.on('connection', function (socket) {
 
     // user send vote
     socket.on('vote', function (id) {
+        console.log('vote');
         // check that the client is spactating someone.    
         if (socket.spectatingView) {            
             var p = playersList[socket.spectatingView];            
             // check if there is a valid poll
             if (p && p.poll && p.poll.pollStatus == 'voting') {                           
                 // if the viewer has already voted that poll change his vote otherwise send a normal vote.
-                if (socket.vote && socket.vote.pollId == p.poll.id) {
-                    console.log('changeVote '+socket.vote.vote+" -> "+id);
+                if (socket.vote && socket.vote.pollId == p.poll.id) {                    
                     p.poll.changeVote(id, socket.vote.vote);
                     socket.vote.vote = id;
                 } else {
-                    console.log('newVote', id);
                     socket.vote = {
                         vote: id,
                         pollId: p.poll.id
                     };
                     p.poll.vote(id);
-                }
-                console.log(p.poll.choices);
+                }                
             }
         }
     });
 
     socket.on('listPlayer', function(){        
+        console.log('listPlayer');
         socket.emit('listPlayer', getListPlayer());
     });
 
@@ -261,7 +261,7 @@ io.on('connection', function (socket) {
     });
     
     socket.on('roomList', function() {
-        console.log('asd');
+        console.log('roomsList');
         var keys = Object.keys(roomsList);
         var list = [];
         for(var i=0; i<keys.length; i++){
@@ -275,10 +275,10 @@ io.on('connection', function (socket) {
     
         //if a player get disconnected he will be removed form player list and from the game.
     socket.on('disconnect', function () {
+        console.log('disconnect');
         if (socket.room) {
             socket.room.removePlayer(socket);
-            delete playersList[socket.id];
-            console.log(socket.id+" removed");
+            delete playersList[socket.id];            
             io.to("room_"+socket.id).emit('test','player disconnected');
         }
     });

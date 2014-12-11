@@ -21,11 +21,6 @@ objects.push({
 })
 
 objects.push({
-    name: 'jump',
-    count: 0
-})
-
-objects.push({
     name: 'springHead',
     count: 0
 })

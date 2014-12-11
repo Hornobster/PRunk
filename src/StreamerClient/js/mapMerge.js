@@ -127,7 +127,7 @@ function createMap(mapList, path ,load){
             }
 
         }
-
+        console.log(block_properties);
         window.mapProperties = block_properties
     }
 

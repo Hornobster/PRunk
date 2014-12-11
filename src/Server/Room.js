@@ -16,11 +16,17 @@ var Room = function(socket, server, roomsList, playersList, mapList){
 		delete this.players[socket.id];
 		socket.room = null;
 		socket.leave(this.id);
-		delete this.playersList[socket];
+		delete this.playersList[socket.id];
+		console.log('removed');
+		console.log(this.playersList);
 		this.sendListPlayer();
 		if(Object.keys(this.players).length === 0){
 			delete this.roomsList[this.id];
 		}
+		socket.ready = false;
+		if(this.gameStatus == 'loading' && this.readyNumber == Object.keys(this.players).length){                    
+            this.start();                    
+        }
 	};
 	
 	// send list of player
@@ -41,7 +47,6 @@ var Room = function(socket, server, roomsList, playersList, mapList){
 	
     
     this.load = function(number){
-    	console.log(number);
         if(this.gameStatus == 'waiting'){
             this.gameStatus = 'loading';
             if(!number){
@@ -77,7 +82,7 @@ var Room = function(socket, server, roomsList, playersList, mapList){
     	this.io.to(this.id).emit('pollResult',obj);
     }
 
-    this.ready = function(socket){
+    this.ready = function(socket){    	
         if(this.gameStatus == 'loading'){
             if(!socket.ready){
                 socket.ready = 1;
@@ -87,6 +92,7 @@ var Room = function(socket, server, roomsList, playersList, mapList){
                 }
             }
         }
+        console.log(this.readyNumber+' '+Object.keys(this.players).length);
     }
 	
 	// room id, this is is needed to join the play
