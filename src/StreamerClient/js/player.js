@@ -65,11 +65,19 @@ function PlayerClass(Q) {
 
                 // update horizontal speed and sprite according to input
                 if (this.getInput('leftKey') && this.getInput('rightKey')) {
-                    if (this.p.direction == 'left') {
-                        this.p.flip = false;
+                    if (this.p.vx > 0) {
+                        if (this.p.vx > this.p.speed * dt * this.p.speedMultiplier) {
+                            this.p.vx += -(this.p.speed * dt * this.p.speedMultiplier) * 2;
+                        } else {
+                            this.p.vx = 0;
+                        }
+                    } else if (this.p.vx < 0) {
+                        if (this.p.vx < -this.p.speed * dt * this.p.speedMultiplier) {
+                            this.p.vx += (this.p.speed * dt * this.p.speedMultiplier) * 2;
+                        } else {
+                            this.p.vx = 0;
+                        }
                     }
-                    this.p.direction = 'right';
-                    this.p.vx = 0;
                 } else if (this.getInput('leftKey')) {
                     if (this.p.direction == 'right') {
                         this.p.flip = 'x';

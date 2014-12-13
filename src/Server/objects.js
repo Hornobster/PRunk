@@ -35,4 +35,14 @@ objects.push({
     count: 0
 })
 
+objects.push({
+    name: 'gloves',
+    count: 0
+})
+
+objects.push({
+    name: 'bomb',
+    count: 0
+})
+
 module.exports = objects;

@@ -99,4 +99,28 @@ window.objects.push({
     }
 })
 
+window.objects.push({
+    name: 'gloves',
+    slot: 'hand',
+    added: function(component){
+        component.entity.on('bump.left', component, function(){
+            component.entity.p.vy = -100;
+        });
+        component.entity.on('bump.right', component, function(){
+            component.entity.p.vy = -100;
+        });
+    }
+})
+
+window.objects.push({
+    name: 'bomb',
+    slot: 'chest',
+    activate: function() {
+        this.entity.p.vy *= 5;
+        this.entity.p.vx *= 2;
+        this.entity.del('bomb');
+    }
+
+})
+
 console.log(window.objects);
