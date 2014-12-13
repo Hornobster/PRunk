@@ -1,7 +1,7 @@
 body {
     margin: 0;
     padding: 0;
-    border: 0;
+    border: 0;    
 }
 
 
@@ -12,7 +12,8 @@ body {
     text-align: center;
     font-size: 5em;
     background-color: #2388db;
-    color: #fff
+    color: #fff;
+    box-shadow: 0 1px 2px #003;
     
 }
 
@@ -31,10 +32,11 @@ body {
 
 #menu {
     margin: 0 auto;
-    padding-top:50px;
-    width: 100%;    
+    margin-top:50px;
+    width: 250px;    
     text-align: center;
     display: block;
+    box-shadow: 0 0 5px #003;
 }
 
 button {
@@ -47,8 +49,14 @@ button {
     color: #fff;
     font-size: 1.2em;
     margin: auto;
+    transition: 0.2s;    
 }
 
+button:hover {
+    transform: scale(1.1, 1.1);    
+    border-radius: 3px;
+    box-shadow: 0 0 5px #003;
+}
 
 
 #listRoom tr{

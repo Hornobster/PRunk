@@ -113,6 +113,13 @@ io.on('connection', function (socket) {
         }
     });
     
+    socket.on('changeNumBlock', function(num){
+        console.log('changeNumBlock '+num);
+        if(socket.room){
+            socket.room.changeNumBlocks(num, socket);
+        }
+    })
+
     socket.on('loadGame', function(number) {
         console.log('loadGame');
         if(socket.room){

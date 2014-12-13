@@ -77,6 +77,14 @@ var Room = function(socket, server, roomsList, playersList, mapList){
             this.io.to(this.id).emit('playerAction', obj);
         }
     }
+
+    this.changeNumBlocks = function(num, socket){
+    	if(socket == this.owener){
+    		if(this.gameStatus == 'waiting'){
+    			this.io.to(this.id).emit('changeNumBlocks', num);    			
+    		}
+    	}
+    }
     
     this.pollResult = function(obj){    	
     	this.io.to(this.id).emit('pollResult',obj);

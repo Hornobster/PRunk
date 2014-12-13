@@ -9,7 +9,7 @@ window.onload= function(){
         document.getElementById('joinDiv').style.display = 'none';
         document.getElementById('joinedDiv').style.display = 'none';       
         document.getElementById('gameDiv').style.display = 'none'; 
-        document.getElementById('setName').style.display = 'none';
+        document.getElementById('setName').style.display = 'none';                
     }
     
     document.getElementById('setNameButton').addEventListener('click', function(){
@@ -77,6 +77,11 @@ window.onload= function(){
         client.leftRoom();
         window.currentPage = "menu";
     });
+
+    document.getElementById('blocksNumber').addEventListener('input', function(){
+        console.log('changeBlockNumber')
+        client.changeNumBlocks(document.getElementById('blocksNumber').value);
+    })
     
 }
 

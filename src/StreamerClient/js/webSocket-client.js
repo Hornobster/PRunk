@@ -36,12 +36,12 @@ var ClientWebSocket = function () {
         window.players = [];
         setupGame(obj.maps);        
         var c = this;
-        createMap(obj.maps,"http://suff.me/PRunk/map/",function(s){
+        createMap(['a.tmx'],"http://suff.me/PRunk/map/",function(s){
             window.Q.load(['tiles_map.png', 'player.png', 'ghost.png'], function(){
                 window.Q.load(objectsImages, function(){
                     window.Q.load({'map.tmx':s},function(){
                         window.Q.sheet('tiles','tiles_map.png',{tilew: 70, tileh: 70});
-                        window.Q.compileSheets("object.png");
+                        
 
                         Q.scene("map", function (stage) {
                             var background = new Q.TileLayer({
@@ -71,7 +71,7 @@ var ClientWebSocket = function () {
                                         z: 1000,
                                         id: ids[i],
                                         name: obj.players[ids[i]],
-                                        inputComponent: 'networkInput',
+                                        inputComponent: 'NetworkInput',
                                         asset: 'ghost.png',
                                         type: Q.SPRITE_NONE,
                                         collisionMask: ~Q.SPRITE_ACTIVE
@@ -177,6 +177,10 @@ var ClientWebSocket = function () {
 
     });    
 
+    socket.on('changeNumBlocks', function(num){
+        document.getElementById('blocksNumberJoin').value = num;
+    })
+
 
     //-------------- client function ------------------------          
 
@@ -240,5 +244,9 @@ var ClientWebSocket = function () {
     }
     this.stopPoll = function(){
         socket.emit('stopPoll');
+    }
+
+    this.changeNumBlocks = function(num){
+        socket.emit('changeNumBlock', num);
     }
 }
