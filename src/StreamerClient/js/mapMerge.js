@@ -184,32 +184,31 @@ function createMap(mapList, path ,load){
         propertiesTag.appendChild(propertyTag)
         dataTag.appendChild(propertiesTag)
 
-        for (var y=0; y<maxHeight;y++){
-            for (var w=0; w< widths.length;w++){
-                for( var x=0; x<widths[w];x++){
-                    if(y==0 || maxHeight-y==1 || (x==0 & w==0) || (widths.length-w==1 && widths[widths.length-1]-x==1)){
-                        if (docs[w].querySelectorAll("data")['1'].children[((y-calcShift(w))*widths[w])+x].attributes['0'].value=="0"){
-                            var tileTag = newDoc.createElement("tile");
-                            tileTag.setAttribute("gid", "9999")
-                            dataTag.appendChild(tileTag)
+        for (var y = 0; y < maxHeight;y++){
+            for (var w = 0; w< widths.length;w++) {
+                for (var x = 0; x < widths[w]; x++) {
+                    if ((calcShift(w) - y) > 0 || y >= (heights[w] + calcShift(w))) {
+                        var tileTag = newDoc.createElement("tile");
+                        tileTag.setAttribute("gid", "0")
+                        dataTag.appendChild(tileTag)
+                    } else {
+                        if (y == 0 || maxHeight - y == 1 || (x == 0 & w == 0) || (widths.length - w == 1 && widths[widths.length - 1] - x == 1)) {
+                            console.log(((y - calcShift(w)) * widths[w]) + x)
+                            if (docs[w].querySelectorAll("data")['1'].children[((y - calcShift(w)) * widths[w]) + x].attributes['0'].value == "0") {
+                                var tileTag = newDoc.createElement("tile");
+                                tileTag.setAttribute("gid", "9999")
+                                dataTag.appendChild(tileTag)
+                            } else {
+                                var tileTag = newDoc.createElement("tile");
+                                tileTag.setAttribute("gid", docs[w].querySelectorAll("data")['1'].children[((y - calcShift(w)) * widths[w]) + x].attributes['0'].value)
+                                dataTag.appendChild(tileTag)
+                            }
                         }else{
                             var tileTag = newDoc.createElement("tile");
-                            tileTag.setAttribute("gid", docs[w].querySelectorAll("data")['1'].children[((y-calcShift(w))*widths[w])+x].attributes['0'].value )
-                            dataTag.appendChild(tileTag)
-                        }
-
-                    }else{
-                        if ((calcShift(w)-y)>0 || y>=(heights[w]+calcShift(w))){
-                            var tileTag = newDoc.createElement("tile");
-                            tileTag.setAttribute("gid", "0")
-                            dataTag.appendChild(tileTag)
-                        }else{
-                            var tileTag = newDoc.createElement("tile");
-                            tileTag.setAttribute("gid", docs[w].querySelectorAll("data")['1'].children[((y-calcShift(w))*widths[w])+x].attributes['0'].value)
+                            tileTag.setAttribute("gid", docs[w].querySelectorAll("data")['1'].children[((y - calcShift(w)) * widths[w]) + x].attributes['0'].value)
                             dataTag.appendChild(tileTag)
                         }
                     }
-
                 }
             }
         }
