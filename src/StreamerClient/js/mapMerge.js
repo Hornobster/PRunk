@@ -108,8 +108,8 @@ function createMap(mapList, path ,load){
             docsCopy.push(docs[mapList[i]]);
             widths.push(parseInt(docs[mapList[i]].querySelectorAll("map")['0'].attributes.width.value));
             heights.push(parseInt(docs[mapList[i]].querySelectorAll("map")['0'].attributes.height.value));
-            collisPoints.push(parseInt(docs[mapList[i]].querySelectorAll("properties")['0'].children['0'].attributes['1'].value.split(",")[0]));
-            collisPoints.push(parseInt(docs[mapList[i]].querySelectorAll("properties")['0'].children['0'].attributes['1'].value.split(",")[1]));
+            collisPoints.push(parseInt(docs[mapList[i]].querySelectorAll("layer")['1'].children['0'].children['0'].attributes['1'].value.split(",")[0]));
+            collisPoints.push(parseInt(docs[mapList[i]].querySelectorAll("layer")['1'].children['0'].children['0'].attributes['1'].value.split(",")[1]));
         }
 
         docs = docsCopy;
