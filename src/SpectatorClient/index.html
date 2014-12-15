@@ -10,14 +10,56 @@
 </head>
 <body>
     <div id="container">
-        <div id="logo">PRunk</div>
+        <div id="logo">
+            PRunk
+            <img id="logoimg" src="images/stickyman.png">
+        </div>
         <div id="playerListDiv">
             <table id="playerListTable" class="playerList" border="0">            
-             
+                <tr>
+                    <td>
+                        ciao
+                    </td>
+                    <td>
+                        ciao1
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        ciao2
+                    </td>
+                    <td>
+                        ciao3
+                    </td>
+                </tr>
             </table>
         </div>
-
-        <div id="objectListDiv">
+        <div id="vote">
+            <div id= "twitch_stream">
+                <object   type="application/x-shockwave-flash"
+                          height="480"
+                          width="800"
+                          id="live_embed_player_flash"
+                          data="http://www.twitch.tv/widgets/live_embed_player.swf?channel=cowsep"
+                          bgcolor="#000000">
+                    <param  name="allowScriptAccess"
+                            value="always" />
+                    <param  name="allowNetworking"
+                            value="all" />
+                    <param  name="movie"
+                            value="http://www.twitch.tv/widgets/live_embed_player.swf" />
+                    <param  name="flashvars"
+                            value="hostname=www.twitch.tv&channel=cowsep&auto_play=true&start_volume={VOLUME}" />
+                </object>
+            </div>
+            <div id="objectListDiv">
+                <figure class="objectFig" onClick="window.client.vote('+keys[i]+', this)" style="background-image: url('images/Boots_Wings.png')"></figure>
+                <figure class="objectFig" onClick="window.client.vote('+keys[i]+', this)" style="background-image: url('images/beer.png')"></figure>
+                <figure class="objectFig" onClick="window.client.vote('+keys[i]+', this)" style="background-image: url('http://suff.me/PRunk/images/boots.png')"></figure>
+                <figure class="objectFig" onClick="window.client.vote('+keys[i]+', this)" style="background-image: url('http://suff.me/PRunk/images/boots.png')"></figure>
+                <figure class="objectFig" onClick="window.client.vote('+keys[i]+', this)" style="background-image: url('http://suff.me/PRunk/images/boots.png')"></figure>
+                <figure class="objectFig" onClick="window.client.vote('+keys[i]+', this)" style="background-image: url('http://suff.me/PRunk/images/boots.png')"></figure>
+            </div>
         </div>
     </div>
 </body>

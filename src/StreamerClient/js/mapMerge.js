@@ -2,6 +2,9 @@
  * Created by usi-stefano on 12/3/14.
  */
 
+createMap(["c.tmx","d.tmx","f.tmx"],"data/",function(map){
+    console.log(map)
+})
 
 function createMap(mapList, path ,load){
 
@@ -114,20 +117,24 @@ function createMap(mapList, path ,load){
 
     function saveMapProperties(){
 
+        window.startPoint= (maxHeight-(relativePoints[0]+collisPoints[0])-3)*70;
+
         block_properties["playerStart"]=relativePoints[0]+collisPoints[0];
-        block_properties["pollStart"]=[];
-        block_properties["pollStop"] =[];
+        block_properties["pollStart"]=[]
+        block_properties["pollStop"] =[]
+
 
         for (var z=0; z< collisPoints.length; z++){
             if (z%2==0){
                 block_properties["pollStart"].push({"x":partialWidth, "passedTrough":false})
             }else{
-                partialWidth += widths[parseInt(z/2)]
+                partialWidth+=widths[parseInt(z/2)]
                 block_properties["pollStop"].push({"x":partialWidth, "passedTrough":false})
             }
 
         }
-        console.log(block_properties);
+
+
         window.mapProperties = block_properties
     }
 
@@ -184,15 +191,22 @@ function createMap(mapList, path ,load){
         for (var y=0; y<maxHeight;y++){
             for (var w=0; w< widths.length;w++){
                 for( var x=0; x<widths[w];x++){
-                    if ((calcShift(w)-y)>0 || y>=(heights[w]+calcShift(w))){
+                    if(y==0 || maxHeight-y==1 || (x==0 & w==0) || (widths.length-w==1 && widths[widths.length-1]-x==1)){
                         var tileTag = newDoc.createElement("tile");
-                        tileTag.setAttribute("gid", "0")
+                        tileTag.setAttribute("gid", "9")
                         dataTag.appendChild(tileTag)
                     }else{
-                        var tileTag = newDoc.createElement("tile");
-                        tileTag.setAttribute("gid", docs[w].querySelectorAll("data")['1'].children[((y-calcShift(w))*widths[w])+x].attributes['0'].value)
-                        dataTag.appendChild(tileTag)
+                        if ((calcShift(w)-y)>0 || y>=(heights[w]+calcShift(w))){
+                            var tileTag = newDoc.createElement("tile");
+                            tileTag.setAttribute("gid", "0")
+                            dataTag.appendChild(tileTag)
+                        }else{
+                            var tileTag = newDoc.createElement("tile");
+                            tileTag.setAttribute("gid", docs[w].querySelectorAll("data")['1'].children[((y-calcShift(w))*widths[w])+x].attributes['0'].value)
+                            dataTag.appendChild(tileTag)
+                        }
                     }
+
                 }
             }
         }

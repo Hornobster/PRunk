@@ -27,11 +27,11 @@ function listPlayer(list){
 	});
 	document.getElementById('playerListTable').innerHTML = html;
 	document.getElementById('playerListDiv').style.display = 'block';
-	document.getElementById('objectListDiv').style.display = 'none';
+	document.getElementById('vote').style.display = 'none';
 }
 
 function view(){		
 	document.getElementById('playerListDiv').style.display = 'none';
-	document.getElementById('objectListDiv').style.display = 'flex';
+	document.getElementById('vote').style.display = 'flex';
 }
 
