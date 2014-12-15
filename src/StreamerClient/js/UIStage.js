@@ -27,7 +27,18 @@ function CreateUIStage(Q) {
             y: 50,
             scale: 0.75
         }, function () {
-            console.log('clicked');
+
+            window.client.sendAction({
+                playerId: window.localPlayer.p.id,
+                x: window.localPlayer.p.x,
+                y: window.localPlayer.p.y,
+                event: 'drop',
+                value: true
+            });
+
+            Object.keys(window.localPlayer.p.equip).forEach(function(elem){
+                window.localPlayer.del(window.localPlayer.p.equip[elem]);
+            })
         }));
 
         stage.equipSprites = {

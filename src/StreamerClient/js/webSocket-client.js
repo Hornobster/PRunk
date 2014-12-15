@@ -152,7 +152,14 @@ var ClientWebSocket = function () {
                         entityEventMap[obj.playerId].entity[functionName]();
                     }
                 }
+            }else if(obj.event == 'drop'){         
+                var entity = entityEventMap[obj.playerId].entity;
+
+                Object.keys(entity.p.equip).forEach(function(elem){
+                    entity.del(entity.p.equip[elem]);
+                });
             }
+
         }
     });
     

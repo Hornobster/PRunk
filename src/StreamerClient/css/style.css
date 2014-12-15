@@ -143,6 +143,7 @@ table.listPlayer {
     margin: auto;
     width: 800px;
     height: 600px;
+    background-color: #cee9f7;
 }
 
 #gameDiv {

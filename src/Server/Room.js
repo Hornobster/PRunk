@@ -15,6 +15,7 @@ var Room = function(socket, server, roomsList, playersList, mapList){
 	this.removePlayer = function(socket){
 		delete this.players[socket.id];
 		socket.room = null;
+		socket.poll = null;
 		socket.leave(this.id);
 		delete this.playersList[socket.id];
 		console.log('removed');		
