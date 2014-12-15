@@ -56,6 +56,7 @@ function PlayerClass(Q) {
             this.on('endBlock', window.client, function() {
                 window.client.startPoll();
             });
+            console.log(this);
         },
 
         step: function(dt) {
@@ -63,7 +64,7 @@ function PlayerClass(Q) {
             while (stepDT > 0) {
                 dt = Math.min(1/30, stepDT);
 
-                // update horizontal speed and sprite according to input
+                // update horizontal speed and sprite according to input                
                 if (this.getInput('leftKey') && this.getInput('rightKey')) {
                     if (this.p.vx > 0) {
                         if (this.p.vx > this.p.speed * dt * this.p.speedMultiplier) {

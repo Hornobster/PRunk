@@ -71,7 +71,7 @@ var ClientWebSocket = function () {
                                         z: 1000,
                                         id: ids[i],
                                         name: obj.players[ids[i]],
-                                        inputComponent: 'NetworkInput',
+                                        inputComponent: 'networkInput',
                                         asset: 'ghost.png',
                                         type: Q.SPRITE_NONE,
                                         collisionMask: ~Q.SPRITE_ACTIVE
@@ -199,6 +199,9 @@ var ClientWebSocket = function () {
         }
     }
 
+    this.setTwitchName = function(twitchName){
+        socket.emit('setTwitchName', twitchName);
+    }
 
     this.setName = function (name) {
         socket.emit('setName', name);

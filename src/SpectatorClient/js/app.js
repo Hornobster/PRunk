@@ -7,7 +7,10 @@ window.onload = function () {
 		client.listPlayer();
 	}
 }
-window.onhashchange = window.onload;
+window.onhashchange = function(){
+	window.onload()
+	location.reload();
+}
 
 function getGetParams(){
 	/*
@@ -32,6 +35,6 @@ function listPlayer(list){
 
 function view(){		
 	document.getElementById('playerListDiv').style.display = 'none';
-	document.getElementById('vote').style.display = 'flex';
+	document.getElementById('objectListDiv').style.display = 'flex';
 }
 

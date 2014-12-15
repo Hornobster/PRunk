@@ -9,7 +9,8 @@ window.onload= function(){
         document.getElementById('joinDiv').style.display = 'none';
         document.getElementById('joinedDiv').style.display = 'none';       
         document.getElementById('gameDiv').style.display = 'none'; 
-        document.getElementById('setName').style.display = 'none';                
+        document.getElementById('setName').style.display = 'none';     
+        document.getElementById('setTwitch').style.display = 'none';           
     }
     
     document.getElementById('setNameButton').addEventListener('click', function(){
@@ -70,6 +71,19 @@ window.onload= function(){
         client.setName(document.getElementById('name').value);
          window.currentPage = "menu";
     });
+
+    document.getElementById('saveTwitchName').addEventListener('click', function(){
+        hideAll();
+        document.getElementById('menu').style.display = 'block';
+        client.setTwitchName(document.getElementById('twitchName').value);
+         window.currentPage = "menu";
+    });
+
+    document.getElementById('backSetTwitchName').addEventListener('click', function(){
+        hideAll();
+        document.getElementById('menu').style.display = 'block';
+        window.currentPage = "menu";
+    });   
     
     document.getElementById('leaveGame').addEventListener('click', function(){
         hideAll();
@@ -81,6 +95,12 @@ window.onload= function(){
     document.getElementById('blocksNumber').addEventListener('input', function(){
         console.log('changeBlockNumber')
         client.changeNumBlocks(document.getElementById('blocksNumber').value);
+    })
+
+    document.getElementById('setTwitchButton').addEventListener('click', function(){
+        hideAll();                
+        document.getElementById('setTwitch').style.display = 'block';         
+        window.currentPage = "setTwitchName";
     })
     
 }

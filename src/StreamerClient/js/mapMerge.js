@@ -76,6 +76,7 @@ function createMap(mapList, path ,load){
         setXMLProperties();
 
         stringXML=(new XMLSerializer()).serializeToString(newDoc);
+        console.log(collisPoints);
         callback(stringXML)
 
     }
@@ -117,19 +118,17 @@ function createMap(mapList, path ,load){
 
     function saveMapProperties(){
 
-        window.startPoint= (maxHeight-(relativePoints[0]+collisPoints[0])-3)*70;
+        //window.startPoint= (maxHeight-(relativePoints[0]+collisPoints[0])-3)*70;
 
-        block_properties["playerStart"]=relativePoints[0]+collisPoints[0];
+        block_properties["playerStart"]=maxHeight-(relativePoints[0]+collisPoints[0])-3;
         block_properties["pollStart"]=[]
-        block_properties["pollStop"] =[]
 
 
         for (var z=0; z< collisPoints.length; z++){
             if (z%2==0){
-                block_properties["pollStart"].push({"x":partialWidth, "passedTrough":false})
+                block_properties["pollStart"].push(partialWidth)
             }else{
-                partialWidth+=widths[parseInt(z/2)]
-                block_properties["pollStop"].push({"x":partialWidth, "passedTrough":false})
+                partialWidth+=widths[parseInt(z/2)]                
             }
 
         }

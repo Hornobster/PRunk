@@ -36,13 +36,22 @@ io.on('connection', function (socket) {
     
     //set palyer name
     socket.on('setName', function (name) {  
-        console.log('senName -> '+name);  
+        console.log('setName -> '+name);  
         if(typeof name === 'string'){
             socket.name = name;
         }else{
             socket.emit('err','invalidName');
         }
     });
+
+    socket.on('setTwitchName', function(twitch){
+        console.log('setTwitchName -> '+ twitch);
+        if(typeof twitch === 'string'){
+            socket.twitchName = twitch;
+        }else{
+            socket.emit('err','invalid stream');
+        }
+    })
 
     //create game
     socket.on('createGame', function () {        
@@ -202,7 +211,8 @@ io.on('connection', function (socket) {
             }        
             socket.spectatingView = id;
             socket.join("room_" + id);
-            socket.emit('view');
+            socket.emit('twitchName', playersList[id].twitchName);
+            socket.emit('view');            
             if (playersList[id].poll) {
                 if (playersList[id].poll.pollStatus == 'voting') {
                     socket.emit('startPoll', playersList[id].poll.choices);

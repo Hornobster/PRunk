@@ -1,9 +1,21 @@
-body {
+@font-face {
+    font-family: "run";
+    src: url(../fonts/run.ttf);
+}
+
+html body {
     margin: 0;
     padding: 0;
     border: 0;    
+    font-family: run;    
 }
 
+
+#logoimg{
+    width: 65px;
+    height: 65px;
+
+}
 
 #logo {
     width: 100%;
@@ -49,6 +61,7 @@ button {
     color: #fff;
     font-size: 1.2em;
     margin: auto;
+    font-family: run;
     transition: 0.2s;    
 }
 
@@ -152,7 +165,25 @@ table.listPlayer {
     text-align: center;
 }
 
+#twitchName{
+    display: block;
+    width: 250px;
+    height: 50px;
+    border: 1px solid #2388db;
+    margin: 0;    
+    background-color: #fff;
+    color: #000;
+    font-size: 1.2em;
+    margin: auto;
+    text-align: center;
+}
+
 #setName {
+    display: none;
+    padding: 50px;
+}
+
+#setTwitch {
     display: none;
     padding: 50px;
 }

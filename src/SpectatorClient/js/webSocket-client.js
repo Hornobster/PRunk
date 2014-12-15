@@ -24,6 +24,11 @@ var ClientWebSocket = function () {
         document.getElementById('objectListDiv').innerHTML = html;
     });
 
+    socket.on('twitchName', function(twitchName){
+        html = '<object id="objectStream" type="application/x-shockwave-flash" height="480" width="800" id="live_embed_player_flash" data="http://www.twitch.tv/widgets/live_embed_player.swf?channel="'+twitchName+'" bgcolor="#000000"><param  name="allowScriptAccess" value="always" /><param  name="allowNetworking" value="all" /><param  name="movie" value="http://www.twitch.tv/widgets/live_embed_player.swf" /><param  name="flashvars"value="hostname=www.twitch.tv&channel=cowsep&auto_play=true&start_volume={VOLUME}" /></object>'
+        document.getElementById('twitch_stream').innerHTML = html
+    })
+
     socket.on('endPoll', function(){
 
     })
@@ -44,8 +49,7 @@ var ClientWebSocket = function () {
     //------------------ Client Function --------------------
 
  	this.view = function(id){
- 		socket.emit('view', id);
-
+ 		socket.emit('view', id);        
  	} 
 
     this.sendVote = function(id){

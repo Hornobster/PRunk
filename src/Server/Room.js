@@ -17,8 +17,7 @@ var Room = function(socket, server, roomsList, playersList, mapList){
 		socket.room = null;
 		socket.leave(this.id);
 		delete this.playersList[socket.id];
-		console.log('removed');
-		console.log(this.playersList);
+		console.log('removed');		
 		this.sendListPlayer();
 		if(Object.keys(this.players).length === 0){
 			delete this.roomsList[this.id];
