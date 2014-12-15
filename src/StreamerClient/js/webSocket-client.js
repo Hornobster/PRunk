@@ -37,7 +37,7 @@ var ClientWebSocket = function () {
         setupGame(obj.maps);        
         var c = this;
         createMap(obj.maps ,"http://suff.me/PRunk/map/",function(s){
-            window.Q.load(['tiles_map.png', 'player.png', 'ghost.png'], function(){
+            window.Q.load(['tiles_map.png', 'player.png', 'ghost.png', 'dropitemsbtn.png'], function(){
                 window.Q.load(objectsImages, function(){
                     window.Q.load({'map.tmx':s},function(){
                         window.Q.sheet('tiles','tiles_map.png',{tilew: 70, tileh: 70});

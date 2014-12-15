@@ -21,6 +21,15 @@ function CreateUIStage(Q) {
             cy: 0
         }));
 
+        var resetItemsBtn = stage.insert(new Q.UI.Button({
+            asset: 'dropitemsbtn.png',
+            x: Q.width - 50,
+            y: 50,
+            scale: 0.75
+        }, function () {
+            console.log('clicked');
+        }));
+
         stage.equipSprites = {
             head: stage.insert(new Q.Sprite({asset: null, cx: 22, cy: 22, x: 0, y: -75}), equipContainer),
             chest: stage.insert(new Q.Sprite({asset: null, cx: 22, cy: 22, x: 0, y: -25}), equipContainer),

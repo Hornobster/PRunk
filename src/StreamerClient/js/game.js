@@ -15,8 +15,8 @@
 function setupGame(mapList) {
        
     var Q = window.Q = Quintus({development: true, imagePath: "http://suff.me/PRunk/images/"}) // remove development option to enable asset caching
-        .include('Sprites, Input, Scenes, 2D, UI')
-        .setup("quintusCanvas")
+        .include('Sprites, Input, Scenes, 2D, UI, Touch')
+        .setup("quintusCanvas").touch();
         
     // bind keycodes to Quintus events
     Q.input.keyboardControls({
