@@ -1,27 +1,39 @@
+function checkCR(){
+    if (event.keyCode==13){
+        saveName();
+    }
+}
+
+function saveName(){
+    hideAll();
+    document.getElementById('menu').style.display = 'block';
+    client.setName(document.getElementById('name').value);
+    window.currentPage = "menu";
+}
+
+function hideAll(){
+    document.getElementById('menu').style.display = 'none';
+    document.getElementById('createDiv').style.display = 'none';
+    document.getElementById('joinDiv').style.display = 'none';
+    document.getElementById('joinedDiv').style.display = 'none';
+    document.getElementById('gameDiv').style.display = 'none';
+    document.getElementById('setName').style.display = 'none';
+    document.getElementById('setTwitch').style.display = 'none';
+    document.getElementById('link').style.display = 'none';
+}
+
 window.onload= function(){
     
     client = window.client = new ClientWebSocket();
     window.currentPage = "menu";
-    
-    function hideAll(){
-        document.getElementById('menu').style.display = 'none';
-        document.getElementById('createDiv').style.display = 'none';
-        document.getElementById('joinDiv').style.display = 'none';
-        document.getElementById('joinedDiv').style.display = 'none';       
-        document.getElementById('gameDiv').style.display = 'none'; 
-        document.getElementById('setName').style.display = 'none';     
-        document.getElementById('setTwitch').style.display = 'none';    
-        document.getElementById('link').style.display = 'none';           
-    }
-    
-    document.getElementById('setNameButton').addEventListener('click', function(){
+
+    document.getElementById('setNameButton').addEventListener('click',function(){
         hideAll();
         document.getElementById('name').value = client.name;
         console.log(client.name);
-        document.getElementById('setName').style.display = 'block';                 
+        document.getElementById('setName').style.display = 'block';
         window.currentPage = "setName";
-
-    });
+    } );
     
     document.getElementById('createGame').addEventListener('click', function(){
         hideAll();
@@ -68,12 +80,7 @@ window.onload= function(){
         window.currentPage = "menu";
     });   
     
-    document.getElementById('saveName').addEventListener('click', function(){
-        hideAll();
-        document.getElementById('menu').style.display = 'block';
-        client.setName(document.getElementById('name').value);
-         window.currentPage = "menu";
-    });
+    document.getElementById('saveName').addEventListener('click', saveName);
 
     document.getElementById('saveTwitchName').addEventListener('click', function(){
         hideAll();
