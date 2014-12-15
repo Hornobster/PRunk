@@ -21,6 +21,9 @@
                 this.entity.del('gun');
             }
         },
+        step: function() {
+            console.log('displayed every frame');
+        },
         destroyed: function(component) {
             console.log('Gun dropped');
         }
@@ -42,6 +45,10 @@ function EquipItemComponent(Q, desc) {
 
                 if (desc.added) {
                     desc.added(this);
+                }
+
+                if (desc.step) {
+                    this.step = desc.step;
                 }
 
                 // if item is activable, bind it to an available action button
