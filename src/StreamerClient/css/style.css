@@ -192,3 +192,9 @@ table.listPlayer {
     margin-top: 10px; 
     float: right;
 }
+
+#link{
+    margin-top: 10px;
+    float: right;
+    display: none;
+}

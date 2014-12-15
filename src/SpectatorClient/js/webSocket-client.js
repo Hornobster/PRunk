@@ -19,13 +19,14 @@ var ClientWebSocket = function () {
             console.log(keys[i]);
             console.log(list[keys[i]]);
             var image = list[keys[i]].name+'Button.png';
-            html += '<figure class="objectFig" onClick="window.client.vote('+keys[i]+', this)" style="background-image: url(\'http://suff.me/PRunk/images/'+image+'\')"></figure>';
+            html += '<figure class="objectFig" onClick="window.client.vote('+keys[i]+', this)" style="background-image: url(\'http://192.99.145.177/PRunk/images/'+image+'\')"></figure>';
         }
         document.getElementById('objectListDiv').innerHTML = html;
     });
 
     socket.on('twitchName', function(twitchName){
-        html = '<object id="objectStream" type="application/x-shockwave-flash" height="480" width="800" id="live_embed_player_flash" data="http://www.twitch.tv/widgets/live_embed_player.swf?channel="'+twitchName+'" bgcolor="#000000"><param  name="allowScriptAccess" value="always" /><param  name="allowNetworking" value="all" /><param  name="movie" value="http://www.twitch.tv/widgets/live_embed_player.swf" /><param  name="flashvars"value="hostname=www.twitch.tv&channel=cowsep&auto_play=true&start_volume={VOLUME}" /></object>'
+        console.log(twitchName);
+        html = '<object id="objectStream" type="application/x-shockwave-flash" height="480" width="800" id="live_embed_player_flash" data="http://www.twitch.tv/widgets/live_embed_player.swf?channel='+twitchName+'" bgcolor="#000000"><param  name="allowScriptAccess" value="always" /><param  name="allowNetworking" value="all" /><param  name="movie" value="http://www.twitch.tv/widgets/live_embed_player.swf" /><param  name="flashvars"value="hostname=www.twitch.tv&channel='+twitchName+'&auto_play=true&start_volume={VOLUME}" /></object>'
         document.getElementById('twitch_stream').innerHTML = html
     })
 

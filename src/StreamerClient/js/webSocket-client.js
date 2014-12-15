@@ -5,6 +5,7 @@ var ClientWebSocket = function () {
     this.name = null;
     this.input = {};
     var inputKeys = ['leftKey', 'rightKey', 'upKey', 'downKey', 'qKey', 'wKey', 'eKey', 'rKey'];
+    this.spectateLink ="";
 
     // ------------ client events --------------------------
 
@@ -14,10 +15,8 @@ var ClientWebSocket = function () {
     // receive the palyer ID
     socket.on('clientId', function (id) {
         //document.getElementById("socketId").innerHTML = id;
-        this.id = id;       
-        if(this.name == null){
-            window.client.name = id;            
-        }                    
+        this.id = id;                               
+        document.getElementById("spectateLink").value = "http://localhost:8000/PRunk/src/SpectatorClient/index.html#"+this.id;
     });
 
     // receive the game ID just created;
@@ -36,7 +35,7 @@ var ClientWebSocket = function () {
         window.players = [];
         setupGame(obj.maps);        
         var c = this;
-        createMap(obj.maps ,"http://suff.me/PRunk/map/",function(s){
+        createMap(obj.maps ,"http://192.99.145.177/PRunk/map/",function(s){
             window.Q.load(['tiles_map.png', 'player.png', 'ghost.png'], function(){
                 window.Q.load(objectsImages, function(){
                     window.Q.load({'map.tmx':s},function(){
@@ -214,6 +213,7 @@ var ClientWebSocket = function () {
 
     this.joinGame = function (id) {
         socket.emit('joinGame', id);
+        document.getElementById('link').style.display = 'block';         
     }
 
     this.loadGame = function () {

@@ -10,27 +10,30 @@ window.onload= function(){
         document.getElementById('joinedDiv').style.display = 'none';       
         document.getElementById('gameDiv').style.display = 'none'; 
         document.getElementById('setName').style.display = 'none';     
-        document.getElementById('setTwitch').style.display = 'none';           
+        document.getElementById('setTwitch').style.display = 'none';    
+        document.getElementById('link').style.display = 'none';           
     }
     
     document.getElementById('setNameButton').addEventListener('click', function(){
         hideAll();
         document.getElementById('name').value = client.name;
         console.log(client.name);
-        document.getElementById('setName').style.display = 'block';         
+        document.getElementById('setName').style.display = 'block';                 
         window.currentPage = "setName";
+
     });
     
     document.getElementById('createGame').addEventListener('click', function(){
         hideAll();
         document.getElementById('createDiv').style.display = 'block';
+        document.getElementById('link').style.display = 'block';                
         client.createGame();
         window.currentPage = "createGame";
     });
     
     document.getElementById('join').addEventListener('click', function(){
         hideAll();
-        document.getElementById('joinDiv').style.display = 'block';
+        document.getElementById('joinDiv').style.display = 'block';             
         var list = client.roomList();
         window.currentPage = "join";
     });
@@ -102,6 +105,12 @@ window.onload= function(){
         document.getElementById('setTwitch').style.display = 'block';         
         window.currentPage = "setTwitchName";
     })
+
+    document.getElementById('spectateLink').addEventListener('click', function(){
+        var copied = new ClipboardEvent('copy', { dataType: 'text/plain', data: 'My string' } );
+        document.dispatchEvent(copied);
+        alert('copied');
+    });
     
 }
 

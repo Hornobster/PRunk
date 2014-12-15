@@ -6,6 +6,14 @@ window.onload = function () {
 	}else{
 		client.listPlayer();
 	}
+
+	document.getElementById('back').addEventListener('click', function(){
+		document.location.href = "#";
+	})
+
+	document.getElementById('menu').addEventListener('click', function(){
+		document.location.href = "../StreamerClient/";
+	})
 }
 window.onhashchange = function(){
 	window.onload()
@@ -24,9 +32,9 @@ function getGetParams(){
 }
 
 function listPlayer(list){
-	html = '<tr><th>Player</th><th>Link</th></tr>';	
+	html = '<tr><th>Player</th>';	
 	list.forEach(function(elem){
-		html += '<tr><td><a href="#'+elem.id+'">'+elem.name+'</a></td><td>http://link.com/?id='+elem.id+'</td></tr>';
+		html += '<tr><td><a href="#'+elem.id+'">'+elem.name+'</a>';
 	});
 	document.getElementById('playerListTable').innerHTML = html;
 	document.getElementById('playerListDiv').style.display = 'block';

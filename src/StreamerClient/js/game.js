@@ -14,7 +14,7 @@
  */
 function setupGame(mapList) {
        
-    var Q = window.Q = Quintus({development: true, imagePath: "http://suff.me/PRunk/images/"}) // remove development option to enable asset caching
+    var Q = window.Q = Quintus({development: true, imagePath: "http://192.99.145.177/PRunk/images/"}) // remove development option to enable asset caching
         .include('Sprites, Input, Scenes, 2D, UI')
         .setup("quintusCanvas")
         
