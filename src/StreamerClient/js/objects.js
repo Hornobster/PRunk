@@ -43,6 +43,9 @@ window.objects.push({
     added: function(component) {
         console.log('supa fast');
         component.entity.p.speed *= 1.5;
+    },
+    destroyed: function(component){
+        component.entity.p.speed /= 1.5;
     }
 });
 
@@ -51,18 +54,10 @@ window.objects.push({
     slot: 'legs',
     added: function(component) {
         console.log('supa jump');
-        component.entity.p.jumpMultiplier *= 1.5;
-        component.jumps = 50;
-    }
-})
-
-window.objects.push({
-    name: 'jump',
-    slot: 'legs',
-    added: function(component) {
-        console.log('supa jump');
-        component.entity.p.jumpMultiplier *= 1.5;
-        component.jumps = 50;
+        component.entity.p.jumpMultiplier *= 1.5;        
+    },
+    destroyed: function(component){
+        component.entity.p.jumpMultiplier /= 1.5;
     }
 })
 

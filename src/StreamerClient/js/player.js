@@ -228,6 +228,7 @@ function PlayerClass(Q) {
 
         onActionJump: function() {
             if (!this.p.isJumping) {
+                this.trigger('jumped');
                 this.play('start_jump', 1);
                 this.p.isJumping = true;
                 this.p.vy = -500*this.p.jumpMultiplier;
@@ -236,6 +237,7 @@ function PlayerClass(Q) {
 
         onLand: function() {
             if (this.p.isJumping) {
+                this.trigger('firstLanded');
                 this.play('end_jump', 1);
             }
             this.p.isJumping = false;
