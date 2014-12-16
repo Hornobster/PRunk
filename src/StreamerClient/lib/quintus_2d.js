@@ -173,8 +173,7 @@ Quintus["2D"] = function(Q) {
       //
       else if (fileExt == "tmx" || fileExt == "xml") {
         var parser = new DOMParser(),
-          doc = parser.parseFromString(Q.asset(dataAsset), "application/xml");
-        //console.log(typeof (dataAsset) + dataAsset)
+          doc = parser.parseFromString(Q.asset(dataAsset), "application/xml");        
         var layer = doc.getElementsByTagName("layer")[this.p.layerIndex],
             width = parseInt(layer.getAttribute("width")),
             height = parseInt(layer.getAttribute("height"));
@@ -196,7 +195,9 @@ Quintus["2D"] = function(Q) {
       else {
         throw "file type not supported";
       }
+
       this.p.tiles = data;
+
       this.p.rows = data.length;
       this.p.cols = data[0].length;
       this.p.w = this.p.cols * this.p.tileW;
@@ -261,28 +262,7 @@ Quintus["2D"] = function(Q) {
             }else{
                 colObj.p.points= null;
             }
-
-            // if(this.p.tiles[tileY][tileX]==3){              
-            //      halfW = p.tileW/2,
-            //      halfH = p.tileH/2;
             
-            //    colObj.p.points = [ 
-            //    [ -halfW, -halfH ],               
-            //    [  halfW,  halfH ],
-            //    [ -halfW,  halfH ]
-            //    ];
-            // }else if(this.p.tiles[tileY][tileX]==4){              
-            //      halfW = p.tileW/2,
-            //      halfH = p.tileH/2;
-            
-            //    colObj.p.points = [                
-            //    [  halfW, -halfH ],               
-            //    [  halfW,  halfH ],
-            //    [ -halfW,  halfH ]
-            //    ];
-            // }else{
-            //   colObj.p.points= null;
-            // }
 
             colObj.p.x = tileX * p.tileW + p.x + p.tileW/2;
             colObj.p.y = tileY * p.tileH + p.y + p.tileH/2;

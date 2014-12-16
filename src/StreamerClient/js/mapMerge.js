@@ -140,7 +140,7 @@ function createMap(mapList, path ,load){
             "6" :	[[-35,-35],[35,-35],[35,35]]
         }
 
-        window.endGame=width-1;
+        window.endGame=width-2;
         
         window.mapProperties = block_properties
     }

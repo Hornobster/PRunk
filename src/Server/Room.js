@@ -103,6 +103,13 @@ var Room = function(socket, server, roomsList, playersList, mapList){
         console.log(this.readyNumber+' '+Object.keys(this.players).length);
     }
 	
+	this.finish = function(socket){		
+		if(!this.winner){
+			winner = socket;
+			this.io.to(this.id).emit('win',{id: socket.id, name: socket.name});
+		}
+	}
+
 	// room id, this is is needed to join the play
 	this.id = socket.id + this.randomString(5);
 	// list of player in the game
@@ -122,7 +129,9 @@ var Room = function(socket, server, roomsList, playersList, mapList){
     // number of player ready
     this.readyNumber = 0;
     // list of all possible map
-    this.mapList = mapList;        
+    this.mapList = mapList;     
+
+    this.winner = null;   
 	socket.emit('gameId', this.id);
 };
 

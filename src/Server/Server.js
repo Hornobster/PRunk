@@ -6,7 +6,7 @@ var Poll = require('./Poll.js');
 var objects = require('./objects.js');
 var roomsList = {};
 var playersList = {};
-var maps = ['a.tmx','b.tmx','c.tmx','d.tmx','e.tmx','g.tmx'];
+var maps = ['s1.tmx','s2.tmx','s3.tmx','s4.tmx','s5.tmx'];
 
 app.get('/', function (req, res) {
     res.sendfile(__dirname + '/index.html');
@@ -171,6 +171,11 @@ io.on('connection', function (socket) {
         }
     });
               
+    socket.on('finish', function(){
+        if(socket.room){
+            socket.room.finish(socket);
+        }
+    });
     
               
               

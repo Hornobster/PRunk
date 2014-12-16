@@ -61,7 +61,7 @@ function PlayerClass(Q) {
                 window.client.startPoll();
             });
             this.on('finished', window.client, function() {
-
+                window.client.finish();
             });
         },
 

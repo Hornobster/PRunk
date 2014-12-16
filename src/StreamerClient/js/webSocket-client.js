@@ -41,9 +41,13 @@ var ClientWebSocket = function () {
     socket.on('load', function (obj) {
         console.log(obj.maps);
         window.players = [];
-        setupGame(obj.maps);        
+        setupGame(obj.maps);  
+        obj.maps.splice(0, 0, "s0.tmx");      
+        obj.maps.push("s6.tmx");
         var c = this;
-        createMap(["s0.tmx","s1.tmx","s2.tmx","s3.tmx","sb.tmx","s5.tmx","s6.tmx"] ,"http://192.99.145.177/PRunk/map/",function(s){
+
+        createMap(obj.maps ,"http://192.99.145.177/PRunk/map/",function(s){
+
             window.Q.load(['sprites.png', 'stickysprites.png', 'stickysprites.json', 'ghost.png', 'dropitemsbtn.png'], function(){
                 window.Q.load(objectsImages, function(){
                     window.Q.load({'map.tmx':s},function(){
@@ -87,7 +91,7 @@ var ClientWebSocket = function () {
                                         id: ids[i],
                                         name: obj.players[ids[i]],
                                         inputComponent: 'networkInput',
-                                        asset: 'ghost.png',
+                                        
                                         type: Q.SPRITE_NONE,
                                         collisionMask: ~Q.SPRITE_ACTIVE
                                     }));
@@ -127,7 +131,7 @@ var ClientWebSocket = function () {
                                     window.players.push(window.localPlayer);
 
                                     stage.add("viewport").follow(window.localPlayer);
-
+                                    stage.viewport.scale = 0.7;
                                 }
                             }
                         });
@@ -204,6 +208,20 @@ var ClientWebSocket = function () {
         document.getElementById('blocksNumberJoin').value = num;
     })
 
+    socket.on('win',function(player){
+        if(player.id == window.localPlayer.p.id){
+            var container = window.Q.stage(1).insert(new Q.UI.Container({fill: '#2388db' , x: window.Q.width/2, y: window.Q.height/2}));
+                window.Q.stage(1).insert(new Q.UI.Text({color: 'white', label: "YOU WIN", size: 40}), container);
+                container.fit(50, 50);
+        }else{
+            var container = window.Q.stage(1).insert(new Q.UI.Container({fill: '#2388db' , x: window.Q.width/2, y: window.Q.height/2}));
+                window.Q.stage(1).insert(new Q.UI.Text({color: 'white', label: player.name+" WIN", size: 40}), container);
+                container.fit(50, 50);
+        }
+
+        window.Q.stage(0).pause();
+        window.Q.stage(1).pause();
+    })
 
     //-------------- client function ------------------------          
 
@@ -275,5 +293,9 @@ var ClientWebSocket = function () {
 
     this.changeNumBlocks = function(num){
         socket.emit('changeNumBlock', num);
+    }
+
+    this.finish = function(){
+        socket.emit('finish');
     }
 }
