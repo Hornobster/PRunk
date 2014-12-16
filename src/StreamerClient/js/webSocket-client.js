@@ -99,7 +99,7 @@ var ClientWebSocket = function () {
                                         label: tmpPlayer.p.name,
                                         color: "black",
                                         size: 16,
-                                        y: -50
+                                        y: -75
                                     }), tmpPlayer);
 
                                     window.players.push(tmpPlayer);
@@ -115,7 +115,7 @@ var ClientWebSocket = function () {
 
                                     var textBack = stage.insert(new Q.UI.Container({
                                         fill: "#2388db",
-                                        y: -50
+                                        y: -75
                                     }), window.localPlayer);
 
                                     stage.insert(new Q.UI.Text({
