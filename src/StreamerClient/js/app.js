@@ -112,12 +112,6 @@ window.onload= function(){
         document.getElementById('setTwitch').style.display = 'block';         
         window.currentPage = "setTwitchName";
     })
-
-    document.getElementById('spectateLink').addEventListener('click', function(){
-        var copied = new ClipboardEvent('copy', { dataType: 'text/plain', data: 'My string' } );
-        document.dispatchEvent(copied);
-        alert('copied');
-    });
     
 }
 
