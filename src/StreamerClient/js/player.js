@@ -68,6 +68,29 @@ function PlayerClass(Q) {
             while (stepDT > 0) {
                 dt = Math.min(1/30, stepDT);
 
+                var collision = null;
+
+                // Follow along the current slope, if possible.
+                if (this.p.collisions !== undefined && this.p.collisions.length > 0 && (this.getInput('leftKey') || this.getInput('rightKey'))) {
+                    if (this.p.collisions.length === 1) {
+                        collision = this.p.collisions[0];
+                    } else {
+                        // If there's more than one possible slope, follow slope with negative Y normal
+                        collision = null;
+
+                        for (var i = 0; i < this.p.collisions.length; i++) {
+                            if (this.p.collisions[i].normalY < 0) {
+                                collision = this.p.collisions[i];
+                            }
+                        }
+                    }
+
+                    // Don't climb up walls.
+                    if (collision !== null && collision.normalY > -0.3 && collision.normalY < 0.3) {
+                        collision = null;
+                    }
+                }
+
                 // update horizontal speed and sprite according to input                
                 if (this.getInput('leftKey') && this.getInput('rightKey')) {
                     if (this.p.vx > 0) {
@@ -88,13 +111,24 @@ function PlayerClass(Q) {
                         this.p.flip = 'x';
                     }
                     this.p.direction = 'left';
-                    this.p.vx += (this.p.isJumping ? -this.p.speed / 2 : -this.p.speed) * dt * this.p.speedMultiplier;
+                    if (!this.p.isJumping && collision) {
+                        this.p.vx = (this.p.vx + -this.p.speed * dt * this.p.speedMultiplier) * -collision.normalY +(collision.normalX*10);
+                        this.p.vy = (this.p.vy + -this.p.speed * 10 * dt * this.p.speedMultiplier) * collision.normalX * 2 - 800 * dt;
+                    } else {
+                        this.p.vx += -this.p.speed * dt * this.p.speedMultiplier;
+                    }
                 } else if (this.getInput('rightKey')) {
                     if (this.p.direction == 'left') {
                         this.p.flip = false;
                     }
                     this.p.direction = 'right';
-                    this.p.vx += (this.p.isJumping ? this.p.speed / 2 : this.p.speed) * dt * this.p.speedMultiplier;
+
+                    if (!this.p.isJumping && collision) {
+                        this.p.vx = (this.p.vx + this.p.speed * dt * this.p.speedMultiplier) * -collision.normalY -(collision.normalX*10);
+                        this.p.vy = (this.p.vy + -this.p.speed * 10 * dt * this.p.speedMultiplier) * -collision.normalX * 2 - 800 * dt;
+                    } else {
+                        this.p.vx += (this.p.speed) * dt * this.p.speedMultiplier;
+                    }
                 } else {
                     if (this.p.vx > 0) {
                         if (this.p.vx > this.p.speed * dt * this.p.speedMultiplier) {
@@ -137,9 +171,12 @@ function PlayerClass(Q) {
                 this.p.x += this.p.vx * dt;
                 this.p.y += this.p.vy * dt;
 
+
+                // reset collisions
+                this.p.collisions = [];
+
                 // check collision
                 this.stage.collide(this);
-
                 stepDT -= dt;
             }
 

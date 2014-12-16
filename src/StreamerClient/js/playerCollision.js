@@ -6,7 +6,8 @@ function PlayerCollisionComponent(Q) {
     Q.component('playerCollision', {
         added: function () {
             Q._defaults(this.entity.p, {
-                collisionMask: Q.SPRITE_DEFAULT
+                collisionMask: Q.SPRITE_DEFAULT,
+                collisions: []
             });
 
             this.entity.on('hit', this, 'collision');

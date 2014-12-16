@@ -197,7 +197,6 @@ Quintus["2D"] = function(Q) {
         throw "file type not supported";
       }
       this.p.tiles = data;
-      console.log(this);  
       this.p.rows = data.length;
       this.p.cols = data[0].length;
       this.p.w = this.p.cols * this.p.tileW;
@@ -258,8 +257,6 @@ Quintus["2D"] = function(Q) {
             
             
             if(window.TileProperties[this.p.tiles[tileY][tileX]]){
-                console.log(window.TileProperties[this.p.tiles[tileY][tileX]]);
-                console.log(p.tileW/2);
                 colObj.p.points = window.TileProperties[this.p.tiles[tileY][tileX]];
             }else{
                 colObj.p.points= null;
@@ -303,6 +300,9 @@ Quintus["2D"] = function(Q) {
                  normal.tileX = tileX;
                  normal.tileY = tileY;
                  normal.tile = this.getTile(tileX,tileY);
+                if(obj.p.collisions !== undefined) {
+                    obj.p.collisions.push(normal);
+                }
             }
           }
         }
