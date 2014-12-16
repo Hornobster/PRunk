@@ -257,27 +257,35 @@ Quintus["2D"] = function(Q) {
           if(this.tilePresent(tileX,tileY)) {
             
             
-            if(this.p.tiles[tileY][tileX]==3){              
-                 halfW = p.tileW/2,
-                 halfH = p.tileH/2;
-            
-               colObj.p.points = [ 
-               [ -halfW, -halfH ],               
-               [  halfW,  halfH ],
-               [ -halfW,  halfH ]
-               ];
-            }else if(this.p.tiles[tileY][tileX]==4){              
-                 halfW = p.tileW/2,
-                 halfH = p.tileH/2;
-            
-               colObj.p.points = [                
-               [  halfW, -halfH ],               
-               [  halfW,  halfH ],
-               [ -halfW,  halfH ]
-               ];
+            if(window.TileProperties[this.p.tiles[tileY][tileX]]){
+                console.log(window.TileProperties[this.p.tiles[tileY][tileX]]);
+                console.log(p.tileW/2);
+                colObj.p.points = window.TileProperties[this.p.tiles[tileY][tileX]];
             }else{
-              colObj.p.points= null;
+                colObj.p.points= null;
             }
+
+            // if(this.p.tiles[tileY][tileX]==3){              
+            //      halfW = p.tileW/2,
+            //      halfH = p.tileH/2;
+            
+            //    colObj.p.points = [ 
+            //    [ -halfW, -halfH ],               
+            //    [  halfW,  halfH ],
+            //    [ -halfW,  halfH ]
+            //    ];
+            // }else if(this.p.tiles[tileY][tileX]==4){              
+            //      halfW = p.tileW/2,
+            //      halfH = p.tileH/2;
+            
+            //    colObj.p.points = [                
+            //    [  halfW, -halfH ],               
+            //    [  halfW,  halfH ],
+            //    [ -halfW,  halfH ]
+            //    ];
+            // }else{
+            //   colObj.p.points= null;
+            // }
 
             colObj.p.x = tileX * p.tileW + p.x + p.tileW/2;
             colObj.p.y = tileY * p.tileH + p.y + p.tileH/2;
