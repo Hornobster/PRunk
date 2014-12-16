@@ -139,6 +139,9 @@ function createMap(mapList, path ,load){
             "5" :	[[-35,-35],[-35,35],[35,-35]],
             "6" :	[[-35,-35],[35,-35],[35,35]]
         }
+
+        window.endGame=width-1;
+        
         window.mapProperties = block_properties
     }
 
@@ -197,14 +200,14 @@ function createMap(mapList, path ,load){
                 for (var x = 0; x < widths[w]; x++) {
                     if ((calcShift(w) - y) > 0 || y >= (heights[w] + calcShift(w))) {
                         var tileTag = newDoc.createElement("tile");
-                        tileTag.setAttribute("gid", "0")
+                        tileTag.setAttribute("gid", "2")
                         dataTag.appendChild(tileTag)
                     } else {
                         if (y == 0 || maxHeight - y == 1 || (x == 0 & w == 0) || (widths.length - w == 1 && widths[widths.length - 1] - x == 1)) {
                             console.log(((y - calcShift(w)) * widths[w]) + x)
                             if (docs[w].querySelectorAll("data")['1'].children[((y - calcShift(w)) * widths[w]) + x].attributes['0'].value == "0") {
                                 var tileTag = newDoc.createElement("tile");
-                                tileTag.setAttribute("gid", "9999")
+                                tileTag.setAttribute("gid", "8888")
                                 dataTag.appendChild(tileTag)
                             } else {
                                 var tileTag = newDoc.createElement("tile");

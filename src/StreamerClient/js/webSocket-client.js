@@ -43,7 +43,7 @@ var ClientWebSocket = function () {
         window.players = [];
         setupGame(obj.maps);        
         var c = this;
-        createMap(["s0.tmx","s1.tmx","s2.tmx","s3.tmx","sb.tmx","s5.tmx"] ,"http://192.99.145.177/PRunk/map/",function(s){
+        createMap(["s0.tmx","s1.tmx","s2.tmx","s3.tmx","sb.tmx","s5.tmx","s6.tmx"] ,"http://192.99.145.177/PRunk/map/",function(s){
             window.Q.load(['sprites.png', 'stickysprites.png', 'stickysprites.json', 'ghost.png', 'dropitemsbtn.png'], function(){
                 window.Q.load(objectsImages, function(){
                     window.Q.load({'map.tmx':s},function(){
@@ -123,7 +123,7 @@ var ClientWebSocket = function () {
                                     }), textBack);
 
                                     textBack.fit(1, 2);
-                                    
+
                                     window.players.push(window.localPlayer);
 
                                     stage.add("viewport").follow(window.localPlayer);
