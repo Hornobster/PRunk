@@ -60,7 +60,9 @@ function PlayerClass(Q) {
             this.on('endBlock', window.client, function() {
                 window.client.startPoll();
             });
-            console.log(this);
+            this.on('finished', window.client, function() {
+
+            });
         },
 
         step: function(dt) {
@@ -184,6 +186,10 @@ function PlayerClass(Q) {
                 if (this.p.x > window.mapProperties.pollStart[this.p.blockIdx] * 70) {
                     this.p.blockIdx++;
                     this.trigger('endBlock');
+                }
+
+                if (this.p.x > window.endGame * 70) {
+                    this.trigger('finished');
                 }
             }
         },
