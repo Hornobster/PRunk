@@ -120,7 +120,7 @@ function createMap(mapList, path ,load){
 
         
 
-        block_properties["playerStart"]=maxHeight-(relativePoints[0]+collisPoints[0])-3;
+        block_properties["playerStart"]=maxHeight-(relativePoints[0]+collisPoints[0])-1;
         block_properties["pollStart"]=[]
 
 
@@ -233,7 +233,7 @@ function createMap(mapList, path ,load){
                 for( var x=0; x<widths[w];x++){
                     if ((calcShift(w)-y)>0 || y>=(heights[w]+calcShift(w))){
                         var tileTag = newDoc.createElement("tile");
-                        tileTag.setAttribute("gid", "9")
+                        tileTag.setAttribute("gid", "3")
                         dataTag.appendChild(tileTag)
                     }else{
                         var tileTag = newDoc.createElement("tile")
