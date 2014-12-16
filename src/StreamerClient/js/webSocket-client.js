@@ -1,3 +1,11 @@
+function range(start, end) {
+    var foo = [];
+    for (var i = start; i <= end; i++) {
+        foo.push(i);
+    }
+    return foo;
+}
+
 var ClientWebSocket = function () {
     var socket = io('ws://localhost:3000');
     var entityEventMap = {};
@@ -36,11 +44,21 @@ var ClientWebSocket = function () {
         setupGame(obj.maps);        
         var c = this;
         createMap(obj.maps ,"http://192.99.145.177/PRunk/map/",function(s){
-            window.Q.load(['tiles_map.png', 'player.png', 'ghost.png', 'dropitemsbtn.png'], function(){
+            window.Q.load(['tiles_map.png', 'stickysprites.png', 'stickysprites.json', 'ghost.png', 'dropitemsbtn.png'], function(){
                 window.Q.load(objectsImages, function(){
                     window.Q.load({'map.tmx':s},function(){
                         window.Q.sheet('tiles','tiles_map.png',{tilew: 70, tileh: 70});
-                        
+
+                        window.Q.compileSheets('stickysprites.png', 'stickysprites.json');
+
+                        window.Q.animations('stickysprites', {
+                            walk: {frames: range(21, 30), rate: 1/10, next: 'run'},
+                            run: {frames: range(4, 13), rate: 1/8, loop: true},
+                            start_jump: {frames: range(0, 1), rate: 1/15, next: 'jump'},
+                            jump: {frames: range(14, 20), rate: 1/10, loop: true},
+                            end_jump: {frames: [3], rate: 1/5, next: 'run'},
+                            idle: {frames: [7], rate: 1/15, loop: true}
+                        });
 
                         Q.scene("map", function (stage) {
                             var background = new Q.TileLayer({

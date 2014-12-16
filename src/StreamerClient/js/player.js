@@ -23,7 +23,8 @@ function PlayerClass(Q) {
         init: function (p) {
             // call default constructor
             this._super(p, {
-                asset: PLAYER_SPRITE_FILE,
+                sheet: 'stickysprites',
+                sprite: 'stickysprites',
                 direction: 'right',
                 vx: 0,
                 vy: 0,
@@ -44,6 +45,9 @@ function PlayerClass(Q) {
                 buttonBindings: [null, null, null, null],
                 blockIdx: 0
             });
+
+            // add animation
+            this.add('animation');
 
             // add collision component for collision events 
             this.add('playerCollision');
@@ -105,7 +109,6 @@ function PlayerClass(Q) {
                             this.p.vx = 0;
                         }
                     }
-
                 }
 
                 if (this.p.vx > this.speed * this.p.speedMultiplier) {
@@ -113,6 +116,18 @@ function PlayerClass(Q) {
                 }
                 if (this.p.vx < -this.speed * this.p.speedMultiplier) {
                     this.p.vx = -this.speed * this.p.speedMultiplier;
+                }
+
+                if (!this.p.isJumping) {
+                    if (this.p.vx != 0) {
+                        if (Math.abs(this.p.vx) > 800) {
+                            this.play('run');
+                        } else {
+                            this.play('walk');
+                        }
+                    } else {
+                        this.play('idle');
+                    }
                 }
 
                 // fake gravity
@@ -170,12 +185,16 @@ function PlayerClass(Q) {
 
         onActionJump: function() {
             if (!this.p.isJumping) {
+                this.play('start_jump', 1);
                 this.p.isJumping = true;
                 this.p.vy = -500*this.p.jumpMultiplier;
             }
         },
 
         onLand: function() {
+            if (this.p.isJumping) {
+                this.play('end_jump', 1);
+            }
             this.p.isJumping = false;
         }
     });
