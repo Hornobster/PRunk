@@ -43,14 +43,12 @@ var ClientWebSocket = function () {
         window.players = [];
         setupGame(obj.maps);        
         var c = this;
-        createMap(obj.maps ,"http://192.99.145.177/PRunk/map/",function(s){
-            window.Q.load(['tiles_map.png', 'stickysprites.png', 'stickysprites.json', 'ghost.png', 'dropitemsbtn.png'], function(){
+        createMap(["s0.tmx","s1.tmx","s2.tmx","s3.tmx","sb.tmx","s5.tmx"] ,"http://192.99.145.177/PRunk/map/",function(s){
+            window.Q.load(['sprites.png', 'stickysprites.png', 'stickysprites.json', 'ghost.png', 'dropitemsbtn.png'], function(){
                 window.Q.load(objectsImages, function(){
                     window.Q.load({'map.tmx':s},function(){
-                        window.Q.sheet('tiles','tiles_map.png',{tilew: 70, tileh: 70});
-
+                        window.Q.sheet('tiles','sprites.png',{tilew: 70, tileh: 70});
                         window.Q.compileSheets('stickysprites.png', 'stickysprites.json');
-
                         window.Q.animations('stickysprites', {
                             walk: {frames: range(21, 30), rate: 1/10, next: 'run'},
                             run: {frames: range(4, 13), rate: 1/8, loop: true},
@@ -83,7 +81,7 @@ var ClientWebSocket = function () {
                             for (var i = 0; i < ids.length; i++) {
                                 if (ids[i] != c.id) {
                                     var tmpPlayer = stage.insert(new Q.Player({
-                                        x: 90,
+                                        x: 450,
                                         y: window.mapProperties.playerStart*70,
                                         z: 1000,
                                         id: ids[i],
@@ -105,7 +103,7 @@ var ClientWebSocket = function () {
                                     window.players.push(tmpPlayer);
                                 } else {
                                     window.localPlayer = stage.insert(new Q.Player({
-                                        x: 90,
+                                        x: 450,
                                         y: window.mapProperties.playerStart*70,
                                         z: 10000,
                                         id: ids[i],
@@ -125,10 +123,11 @@ var ClientWebSocket = function () {
                                     }), textBack);
 
                                     textBack.fit(1, 2);
-
+                                    
                                     window.players.push(window.localPlayer);
 
                                     stage.add("viewport").follow(window.localPlayer);
+
                                 }
                             }
                         });

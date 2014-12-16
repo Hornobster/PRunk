@@ -77,6 +77,7 @@ function createMap(mapList, path ,load){
 
         stringXML=(new XMLSerializer()).serializeToString(newDoc);
         console.log(collisPoints);
+        console.log(relativePoints)
         callback(stringXML)
 
     }
@@ -130,6 +131,13 @@ function createMap(mapList, path ,load){
             }else{
                 partialWidth+=widths[parseInt(z/2)]                
             }
+        }
+
+        window.TileProperties={
+            "3" :	"[[-35,-35],[-35,35],[35,35]]",
+            "4" : 	"[[-35,35],[35,-35],[35,35]]",
+            "5" :	"[[-35,-35],[-35,35],[35,-35]]",
+            "6" :	"[[-35,-35],[35,-35],[35,35]]"
         }
         window.mapProperties = block_properties
     }
