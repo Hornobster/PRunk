@@ -174,7 +174,7 @@ Quintus["2D"] = function(Q) {
       else if (fileExt == "tmx" || fileExt == "xml") {
         var parser = new DOMParser(),
           doc = parser.parseFromString(Q.asset(dataAsset), "application/xml");
-        console.log(typeof (dataAsset) + dataAsset)
+        //console.log(typeof (dataAsset) + dataAsset)
         var layer = doc.getElementsByTagName("layer")[this.p.layerIndex],
             width = parseInt(layer.getAttribute("width")),
             height = parseInt(layer.getAttribute("height"));
@@ -197,6 +197,7 @@ Quintus["2D"] = function(Q) {
         throw "file type not supported";
       }
       this.p.tiles = data;
+      console.log(this);  
       this.p.rows = data.length;
       this.p.cols = data[0].length;
       this.p.w = this.p.cols * this.p.tileW;
@@ -237,7 +238,7 @@ Quintus["2D"] = function(Q) {
     collidableTile: function(tileNum) {
       return tileNum > 0;
     },
-
+    countt: 0,
     collide: function(obj) {
       var p = this.p,
           tileStartX = Math.floor((obj.p.x - obj.p.cx - p.x) / p.tileW),
@@ -246,13 +247,50 @@ Quintus["2D"] = function(Q) {
           tileEndY =  Math.ceil((obj.p.y - obj.p.cy + obj.p.h - p.y) / p.tileH),
           colObj = this.collisionObject,
           normal = this.collisionNormal,
-          col;
+          col;          
+      
   
       normal.collided = false;
 
       for(var tileY = tileStartY; tileY<=tileEndY; tileY++) {
         for(var tileX = tileStartX; tileX<=tileEndX; tileX++) {
           if(this.tilePresent(tileX,tileY)) {
+            
+            
+            if(this.p.tiles[tileY][tileX]==3){              
+                 halfW = p.tileW/2,
+                 halfH = p.tileH/2;
+            
+               colObj.p.points = [ 
+               [ -halfW, -halfH ],               
+               [  halfW,  halfH ],
+               [ -halfW,  halfH ]
+               ];
+            }
+
+            if(this.p.tiles[tileY][tileX]==1){              
+                 halfW = p.tileW/2,
+                 halfH = p.tileH/2;
+            
+               colObj.p.points = [ 
+               [ -halfW, -halfH ],
+               [  halfW, -halfH ],               
+               [  halfW,  halfH ],
+               [ -halfW,  halfH ]
+               ];
+            }
+            
+            if(this.p.tiles[tileY][tileX]==4){              
+                 halfW = p.tileW/2,
+                 halfH = p.tileH/2;
+            
+               colObj.p.points = [                
+               [  halfW, -halfH ],               
+               [  halfW,  halfH ],
+               [ -halfW,  halfH ]
+               ];
+            }
+
             colObj.p.x = tileX * p.tileW + p.x + p.tileW/2;
             colObj.p.y = tileY * p.tileH + p.y + p.tileH/2;
             
