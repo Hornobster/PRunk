@@ -83,7 +83,7 @@ var ClientWebSocket = function () {
                             for (var i = 0; i < ids.length; i++) {
                                 if (ids[i] != c.id) {
                                     var tmpPlayer = stage.insert(new Q.Player({
-                                        x: 300,
+                                        x: 90,
                                         y: window.mapProperties.playerStart*70,
                                         z: 1000,
                                         id: ids[i],
@@ -105,7 +105,7 @@ var ClientWebSocket = function () {
                                     window.players.push(tmpPlayer);
                                 } else {
                                     window.localPlayer = stage.insert(new Q.Player({
-                                        x: 300,
+                                        x: 90,
                                         y: window.mapProperties.playerStart*70,
                                         z: 10000,
                                         id: ids[i],

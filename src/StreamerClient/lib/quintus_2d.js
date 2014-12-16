@@ -238,7 +238,7 @@ Quintus["2D"] = function(Q) {
     collidableTile: function(tileNum) {
       return tileNum > 0;
     },
-    countt: 0,
+    
     collide: function(obj) {
       var p = this.p,
           tileStartX = Math.floor((obj.p.x - obj.p.cx - p.x) / p.tileW),
@@ -266,21 +266,7 @@ Quintus["2D"] = function(Q) {
                [  halfW,  halfH ],
                [ -halfW,  halfH ]
                ];
-            }
-
-            if(this.p.tiles[tileY][tileX]==1){              
-                 halfW = p.tileW/2,
-                 halfH = p.tileH/2;
-            
-               colObj.p.points = [ 
-               [ -halfW, -halfH ],
-               [  halfW, -halfH ],               
-               [  halfW,  halfH ],
-               [ -halfW,  halfH ]
-               ];
-            }
-            
-            if(this.p.tiles[tileY][tileX]==4){              
+            }else if(this.p.tiles[tileY][tileX]==4){              
                  halfW = p.tileW/2,
                  halfH = p.tileH/2;
             
@@ -289,6 +275,8 @@ Quintus["2D"] = function(Q) {
                [  halfW,  halfH ],
                [ -halfW,  halfH ]
                ];
+            }else{
+              colObj.p.points= null;
             }
 
             colObj.p.x = tileX * p.tileW + p.x + p.tileW/2;
