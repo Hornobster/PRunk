@@ -1,3 +1,10 @@
+function checkBrowser(){    
+    var isOpera = !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+    var isFirefox = typeof InstallTrigger !== 'undefined';    
+    var isChrome = !!window.chrome && !isOpera;
+    return isFirefox || isChrome;
+}
+
 function checkCR(){
     if (event.keyCode==13){
         saveName();
@@ -36,11 +43,16 @@ window.onload= function(){
     } );
     
     document.getElementById('createGame').addEventListener('click', function(){
-        hideAll();
-        document.getElementById('createDiv').style.display = 'block';
-        document.getElementById('link').style.display = 'block';                
-        client.createGame();
-        window.currentPage = "createGame";
+        console.log("check");
+        if(checkBrowser()){
+            hideAll();
+            document.getElementById('createDiv').style.display = 'block';
+            document.getElementById('link').style.display = 'block';                
+            client.createGame();
+            window.currentPage = "createGame";
+        }else{
+            alert("your browser is not supported");
+        }
     });
     
     document.getElementById('join').addEventListener('click', function(){
@@ -117,15 +129,18 @@ window.onload= function(){
 
 // cliecked on room name ind the list
 function joinGame(id){
-    window.client.joinGame(id);
-    document.getElementById('menu').style.display = 'none';
-    document.getElementById('createDiv').style.display = 'none';
-    document.getElementById('joinDiv').style.display = 'none';
-    document.getElementById('joinedDiv').style.display = 'block';               
-    document.getElementById('gameDiv').style.display = 'none';     
-    document.getElementById('setName').style.display = 'none';
-    window.currentPage = "joinedGame";
-    
+    if(checkBrowser()){
+        window.client.joinGame(id);
+        document.getElementById('menu').style.display = 'none';
+        document.getElementById('createDiv').style.display = 'none';
+        document.getElementById('joinDiv').style.display = 'none';
+        document.getElementById('joinedDiv').style.display = 'block';               
+        document.getElementById('gameDiv').style.display = 'none';     
+        document.getElementById('setName').style.display = 'none';
+        window.currentPage = "joinedGame";
+    }else{
+        alert('your browser is not supported yet');
+    }
 }
 
 function setListRoom(list){

@@ -23,7 +23,12 @@ var Room = function(socket, server, roomsList, playersList, mapList){
 		if(Object.keys(this.players).length === 0){
 			delete this.roomsList[this.id];
 		}
-		socket.ready = false;
+		
+		if(socket.ready){
+			this.readyNumber--;
+			socket.ready = false;
+		}
+
 		if(this.gameStatus == 'loading' && this.readyNumber == Object.keys(this.players).length){                    
             this.start();                    
         }
