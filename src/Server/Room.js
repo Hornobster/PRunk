@@ -23,7 +23,7 @@ var Room = function(socket, server, roomsList, playersList, mapList){
 		if(Object.keys(this.players).length === 0){
 			delete this.roomsList[this.id];
 		}
-		
+
 		if(socket.ready){
 			this.readyNumber--;
 			socket.ready = false;
@@ -110,7 +110,7 @@ var Room = function(socket, server, roomsList, playersList, mapList){
 	
 	this.finish = function(socket){		
 		if(!this.winner){
-			winner = socket;
+			this.winner = socket;
 			this.io.to(this.id).emit('win',{id: socket.id, name: socket.name});
 		}
 	}
